@@ -1,1 +1,1258 @@
-
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快手网页版 - 记录世界记录你</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-container {
+            background-color: #1a1a1a;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .modal-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #999;
+        }
+        
+        .modal-tab.active {
+            color: #ff6600;
+            border-bottom: 2px solid #ff6600;
+        }
+        
+        .modal-form {
+            display: none;
+        }
+        
+        .modal-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #ff6600;
+        }
+        
+        .btn {
+            padding: 12px;
+            background-color: #ff6600;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        .modal-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .modal-link {
+            color: #ff6600;
+            cursor: pointer;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #999;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* 顶部导航栏 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background-color: #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            z-index: 100;
+            border-bottom: 1px solid #333;
+        }
+        
+        .logo {
+            color: #ff6600;
+            font-weight: bold;
+            font-size: 22px;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-icon, .camera-icon, .user-icon {
+            width: 24px;
+            height: 24px;
+            color: #fff;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        
+        .login-btn {
+            background-color: #ff6600;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+        
+        /* 底部导航栏 */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 55px;
+            background-color: #000;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #333;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            color: #999;
+            cursor: pointer;
+        }
+        
+        .nav-item.active {
+            color: #ff6600;
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 2px;
+        }
+        
+        /* 视频流区域 */
+        .video-container {
+            margin-top: 50px;
+            margin-bottom: 55px;
+            height: calc(100vh - 105px);
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
+        }
+        
+        .video-item {
+            position: relative;
+            height: 100vh;
+            scroll-snap-align: start;
+            overflow: hidden;
+        }
+        
+        .video-player {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* 视频信息区域 */
+        .video-info {
+            position: absolute;
+            bottom: 80px;
+            left: 12px;
+            right: 12px;
+        }
+        
+        .username {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .video-desc {
+            font-size: 14px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        
+        .music-info {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #ddd;
+            margin-bottom: 16px;
+        }
+        
+        .music-icon {
+            width: 12px;
+            height: 12px;
+            margin-right: 4px;
+        }
+        
+        /* 右侧操作栏 */
+        .action-bar {
+            position: absolute;
+            right: 12px;
+            bottom: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        
+        .action-icon {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .action-icon.liked {
+            background-color: rgba(255, 102, 0, 0.2);
+        }
+        
+        .action-count {
+            font-size: 12px;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            margin-bottom: 4px;
+        }
+        
+        /* 点赞动画 */
+        .like-animation {
+            position: absolute;
+            pointer-events: none;
+            z-index: 10;
+            animation: like-animation 1s ease-out forwards;
+        }
+        
+        @keyframes like-animation {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1) translateY(-50px);
+                opacity: 0;
+            }
+        }
+        
+        /* 用户主页 */
+        .profile-page {
+            display: none;
+            margin-top: 50px;
+            margin-bottom: 55px;
+            padding: 15px;
+            overflow-y: auto;
+            height: calc(100vh - 105px);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .profile-id {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        
+        .profile-stats {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .stat-item {
+            margin-right: 20px;
+            text-align: center;
+        }
+        
+        .stat-count {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .profile-actions {
+            display: flex;
+        }
+        
+        .profile-btn {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            background-color: #333;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .profile-btn.primary {
+            background-color: #ff6600;
+        }
+        
+        .profile-tabs {
+            display: flex;
+            border-bottom: 1px solid #333;
+            margin-bottom: 15px;
+        }
+        
+        .profile-tab {
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #999;
+            cursor: pointer;
+        }
+        
+        .profile-tab.active {
+            color: #ff6600;
+            border-bottom: 2px solid #ff6600;
+        }
+        
+        .profile-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+        
+        .profile-video {
+            aspect-ratio: 9/16;
+            background-color: #2a2a2a;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .profile-video img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #fff;
+        }
+        
+        /* 响应式调整 */
+        @media (min-width: 768px) {
+            .video-container, .profile-page {
+                width: 414px;
+                margin-left: auto;
+                margin-right: auto;
+                border-left: 1px solid #333;
+                border-right: 1px solid #333;
+            }
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+        }
+        
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ff6600;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 邮箱验证提示 */
+        .email-hint {
+            font-size: 12px;
+            color: #ff6600;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* 声音控制 */
+        .sound-control {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .sound-icon {
+            color: white;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 登录/注册模态框 -->
+    <div class="modal" id="authModal">
+        <div class="modal-container">
+            <div class="close-modal" id="closeAuth">&times;</div>
+            <div class="modal-tabs">
+                <div class="modal-tab active" data-tab="login">登录</div>
+                <div class="modal-tab" data-tab="register">注册</div>
+            </div>
+            
+            <form class="modal-form active" id="loginForm">
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="邮箱/用户名" id="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-input" placeholder="密码" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-full">登录</button>
+                <div class="modal-footer">
+                    忘记密码？<span class="modal-link" id="toRegister">注册账号</span>
+                </div>
+            </form>
+            
+            <form class="modal-form" id="registerForm">
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="用户名" id="registerUsername" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-input" placeholder="邮箱地址 (例如: example@gmail.com)" id="registerEmail" required>
+                    <div class="email-hint" id="emailHint">请输入有效的邮箱地址</div>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-input" placeholder="密码" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-input" placeholder="确认密码" id="registerConfirmPassword" required>
+                </div>
+                <button type="submit" class="btn btn-full">注册</button>
+                <div class="modal-footer">
+                    已有账号？<span class="modal-link" id="toLogin">立即登录</span>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 顶部导航栏 -->
+    <div class="header">
+        <div class="logo">快手</div>
+        <div class="header-actions">
+            <div class="search-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="camera-icon" id="openPublish">
+                <i class="fas fa-camera"></i>
+            </div>
+            <button class="login-btn" id="showAuth">登录</button>
+            <img src="https://randomuser.me/api/portraits/men/1.jpg" class="user-avatar" id="userAvatar" style="display: none;">
+        </div>
+    </div>
+    
+    <!-- 视频流区域 -->
+    <div class="video-container" id="videoContainer">
+        <!-- 视频将通过JavaScript动态添加 -->
+    </div>
+    
+    <!-- 用户主页 -->
+    <div class="profile-page" id="profilePage">
+        <div class="profile-header">
+            <img src="https://randomuser.me/api/portraits/men/1.jpg" class="profile-avatar" id="profileAvatar">
+            <div class="profile-info">
+                <div class="profile-name" id="profileName">用户名</div>
+                <div class="profile-id" id="profileId">快手号: 123456789</div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-count" id="followCount">120</div>
+                        <div class="stat-label">关注</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-count" id="fansCount">1.2万</div>
+                        <div class="stat-label">粉丝</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-count" id="likeCount">5.6万</div>
+                        <div class="stat-label">获赞</div>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <div class="profile-btn primary">编辑资料</div>
+                    <div class="profile-btn">分享</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="profile-tabs">
+            <div class="profile-tab active">作品</div>
+            <div class="profile-tab">动态</div>
+            <div class="profile-tab">喜欢</div>
+        </div>
+        
+        <div class="profile-content" id="profileContent">
+            <!-- 用户作品将通过JavaScript动态添加 -->
+        </div>
+    </div>
+    
+    <!-- 底部导航栏 -->
+    <div class="footer">
+        <div class="nav-item active" data-page="home">
+            <div class="nav-icon">
+                <i class="fas fa-home"></i>
+            </div>
+            <div>首页</div>
+        </div>
+        <div class="nav-item" data-page="discover">
+            <div class="nav-icon">
+                <i class="fas fa-compass"></i>
+            </div>
+            <div>发现</div>
+        </div>
+        <div class="nav-item" data-page="publish" id="publishNav">
+            <div class="nav-icon">
+                <i class="fas fa-plus-circle"></i>
+            </div>
+            <div>发布</div>
+        </div>
+        <div class="nav-item" data-page="message">
+            <div class="nav-icon">
+                <i class="fas fa-comment"></i>
+            </div>
+            <div>消息</div>
+        </div>
+        <div class="nav-item" data-page="profile" id="profileNav">
+            <div class="nav-icon">
+                <i class="fas fa-user"></i>
+            </div>
+            <div>我</div>
+        </div>
+    </div>
+    
+    <script>
+        // 模拟用户数据
+        let currentUser = null;
+        const users = JSON.parse(localStorage.getItem('kuaishou_users')) || [];
+        
+        // 模拟视频数据
+        let videoData = JSON.parse(localStorage.getItem('kuaishou_videos')) || [
+            {
+                id: 1,
+                username: "用户1",
+                avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+                videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                description: "这是一个有趣的视频，欢迎大家点赞关注！",
+                music: "背景音乐 - 流行歌曲",
+                likes: 1234,
+                comments: 56,
+                shares: 12,
+                userId: 1,
+                likedBy: [] // 存储点赞用户的ID
+            },
+            {
+                id: 2,
+                username: "用户2",
+                avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+                videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                description: "今天天气真好，出去走走~",
+                music: "轻音乐 - 自然之声",
+                likes: 567,
+                comments: 23,
+                shares: 5,
+                userId: 2,
+                likedBy: []
+            },
+            {
+                id: 3,
+                username: "用户3",
+                avatar: "https://randomuser.me/api/portraits/men/3.jpg",
+                videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                description: "分享一个生活小技巧，超级实用！",
+                music: "原创音乐 - 我的创作",
+                likes: 890,
+                comments: 34,
+                shares: 8,
+                userId: 3,
+                likedBy: []
+            }
+        ];
+        
+        // DOM元素
+        const authModal = document.getElementById('authModal');
+        const closeAuth = document.getElementById('closeAuth');
+        const showAuth = document.getElementById('showAuth');
+        const authTabs = document.querySelectorAll('.modal-tab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const toRegister = document.getElementById('toRegister');
+        const toLogin = document.getElementById('toLogin');
+        const userAvatar = document.getElementById('userAvatar');
+        const profileNav = document.getElementById('profileNav');
+        const videoContainer = document.getElementById('videoContainer');
+        const profilePage = document.getElementById('profilePage');
+        const profileName = document.getElementById('profileName');
+        const profileId = document.getElementById('profileId');
+        const profileAvatar = document.getElementById('profileAvatar');
+        const followCount = document.getElementById('followCount');
+        const fansCount = document.getElementById('fansCount');
+        const likeCount = document.getElementById('likeCount');
+        const profileContent = document.getElementById('profileContent');
+        const navItems = document.querySelectorAll('.nav-item');
+        const registerEmail = document.getElementById('registerEmail');
+        const emailHint = document.getElementById('emailHint');
+        
+        // 邮箱验证函数
+        function validateEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+        
+        // 邮箱输入验证
+        registerEmail.addEventListener('blur', function() {
+            if (this.value && !validateEmail(this.value)) {
+                emailHint.style.display = 'block';
+                this.style.borderColor = '#ff6600';
+            } else {
+                emailHint.style.display = 'none';
+                this.style.borderColor = '#444';
+            }
+        });
+        
+        // 显示/隐藏认证模态框
+        showAuth.addEventListener('click', () => {
+            authModal.style.display = 'flex';
+        });
+        
+        closeAuth.addEventListener('click', () => {
+            authModal.style.display = 'none';
+        });
+        
+        // 切换登录/注册选项卡
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.getAttribute('data-tab');
+                
+                authTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                loginForm.classList.remove('active');
+                registerForm.classList.remove('active');
+                
+                if (tabName === 'login') {
+                    loginForm.classList.add('active');
+                } else {
+                    registerForm.classList.add('active');
+                }
+            });
+        });
+        
+        toRegister.addEventListener('click', () => {
+            authTabs.forEach(t => t.classList.remove('active'));
+            document.querySelector('[data-tab="register"]').classList.add('active');
+            
+            loginForm.classList.remove('active');
+            registerForm.classList.add('active');
+        });
+        
+        toLogin.addEventListener('click', () => {
+            authTabs.forEach(t => t.classList.remove('active'));
+            document.querySelector('[data-tab="login"]').classList.add('active');
+            
+            registerForm.classList.remove('active');
+            loginForm.classList.add('active');
+        });
+        
+        // 登录功能
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // 验证用户 - 支持邮箱或用户名登录
+            const user = users.find(u => 
+                (u.username === username || u.email === username) && 
+                u.password === password
+            );
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('kuaishou_current_user', JSON.stringify(user));
+                
+                // 更新UI
+                showAuth.style.display = 'none';
+                userAvatar.src = user.avatar;
+                userAvatar.style.display = 'block';
+                
+                // 关闭模态框
+                authModal.style.display = 'none';
+                
+                // 显示成功消息
+                alert('登录成功！');
+                
+                // 更新个人主页信息
+                updateProfileInfo();
+                
+                // 重新初始化视频流，更新点赞状态
+                initVideoFeed();
+            } else {
+                alert('用户名/邮箱或密码错误！');
+            }
+        });
+        
+        // 注册功能
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            // 验证邮箱格式
+            if (!validateEmail(email)) {
+                emailHint.style.display = 'block';
+                registerEmail.style.borderColor = '#ff6600';
+                alert('请输入有效的邮箱地址！');
+                return;
+            }
+            
+            // 验证输入
+            if (password !== confirmPassword) {
+                alert('两次输入的密码不一致！');
+                return;
+            }
+            
+            if (users.find(u => u.username === username)) {
+                alert('用户名已存在！');
+                return;
+            }
+            
+            if (users.find(u => u.email === email)) {
+                alert('该邮箱已被注册！');
+                return;
+            }
+            
+            // 创建新用户
+            const newUser = {
+                id: Date.now(),
+                username,
+                email,
+                password,
+                avatar: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 50) + 1}.jpg`,
+                followCount: Math.floor(Math.random() * 200),
+                fansCount: Math.floor(Math.random() * 10000),
+                likeCount: Math.floor(Math.random() * 50000),
+                kuaishouId: 'ks' + Date.now().toString().slice(-8)
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('kuaishou_users', JSON.stringify(users));
+            
+            // 自动登录
+            currentUser = newUser;
+            localStorage.setItem('kuaishou_current_user', JSON.stringify(newUser));
+            
+            // 更新UI
+            showAuth.style.display = 'none';
+            userAvatar.src = newUser.avatar;
+            userAvatar.style.display = 'block';
+            
+            // 关闭模态框
+            authModal.style.display = 'none';
+            
+            // 显示成功消息
+            alert('注册成功！已自动登录。');
+            
+            // 更新个人主页信息
+            updateProfileInfo();
+            
+            // 重新初始化视频流，更新点赞状态
+            initVideoFeed();
+        });
+        
+        // 检查是否已登录
+        function checkLoginStatus() {
+            const savedUser = localStorage.getItem('kuaishou_current_user');
+            
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showAuth.style.display = 'none';
+                userAvatar.src = currentUser.avatar;
+                userAvatar.style.display = 'block';
+                
+                // 更新个人主页信息
+                updateProfileInfo();
+            }
+        }
+        
+        // 更新个人主页信息
+        function updateProfileInfo() {
+            if (currentUser) {
+                profileName.textContent = currentUser.username;
+                profileId.textContent = `快手号: ${currentUser.kuaishouId}`;
+                profileAvatar.src = currentUser.avatar;
+                followCount.textContent = currentUser.followCount;
+                fansCount.textContent = currentUser.fansCount > 1000 ? 
+                    (currentUser.fansCount / 1000).toFixed(1) + '万' : currentUser.fansCount;
+                likeCount.textContent = currentUser.likeCount > 10000 ? 
+                    (currentUser.likeCount / 10000).toFixed(1) + '万' : currentUser.likeCount;
+            }
+        }
+        
+        // 点赞功能
+        function likeVideo(videoId) {
+            if (!currentUser) {
+                authModal.style.display = 'flex';
+                return;
+            }
+            
+            const video = videoData.find(v => v.id === videoId);
+            if (!video) return;
+            
+            const userId = currentUser.id;
+            const isLiked = video.likedBy.includes(userId);
+            
+            if (isLiked) {
+                // 取消点赞
+                video.likedBy = video.likedBy.filter(id => id !== userId);
+                video.likes--;
+                
+                // 更新用户获赞数
+                const videoOwner = users.find(u => u.id === video.userId);
+                if (videoOwner) {
+                    videoOwner.likeCount--;
+                    localStorage.setItem('kuaishou_users', JSON.stringify(users));
+                }
+            } else {
+                // 点赞
+                video.likedBy.push(userId);
+                video.likes++;
+                
+                // 更新用户获赞数
+                const videoOwner = users.find(u => u.id === video.userId);
+                if (videoOwner) {
+                    videoOwner.likeCount++;
+                    localStorage.setItem('kuaishou_users', JSON.stringify(users));
+                }
+                
+                // 创建点赞动画
+                createLikeAnimation(videoId);
+            }
+            
+            // 保存更新后的视频数据
+            localStorage.setItem('kuaishou_videos', JSON.stringify(videoData));
+            
+            // 更新UI
+            updateLikeUI(videoId);
+            
+            // 更新个人主页信息
+            updateProfileInfo();
+        }
+        
+        // 创建点赞动画
+        function createLikeAnimation(videoId) {
+            const videoItem = document.querySelector(`[data-video-id="${videoId}"]`);
+            if (!videoItem) return;
+            
+            const likeBtn = videoItem.querySelector('.action-item:nth-child(2)');
+            const rect = likeBtn.getBoundingClientRect();
+            
+            // 创建多个爱心动画
+            for (let i = 0; i < 5; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'like-animation';
+                heart.innerHTML = '<i class="fas fa-heart" style="color: #ff6600; font-size: 24px;"></i>';
+                heart.style.left = `${rect.left + rect.width / 2}px`;
+                heart.style.top = `${rect.top}px`;
+                
+                // 添加随机偏移
+                const randomX = (Math.random() - 0.5) * 100;
+                const randomDelay = Math.random() * 0.5;
+                
+                heart.style.setProperty('--random-x', `${randomX}px`);
+                heart.style.animationDelay = `${randomDelay}s`;
+                
+                document.body.appendChild(heart);
+                
+                // 动画结束后移除元素
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        heart.remove();
+                    }
+                }, 1000 + randomDelay * 1000);
+            }
+        }
+        
+        // 更新点赞UI
+        function updateLikeUI(videoId) {
+            const video = videoData.find(v => v.id === videoId);
+            if (!video) return;
+            
+            const videoItem = document.querySelector(`[data-video-id="${videoId}"]`);
+            if (!videoItem) return;
+            
+            const likeBtn = videoItem.querySelector('.action-item:nth-child(2)');
+            const likeIcon = likeBtn.querySelector('.action-icon');
+            const likeCountEl = likeBtn.querySelector('.action-count');
+            
+            const isLiked = currentUser && video.likedBy.includes(currentUser.id);
+            
+            // 更新图标和样式
+            if (isLiked) {
+                likeIcon.classList.add('liked');
+                likeIcon.querySelector('i').style.color = '#ff6600';
+            } else {
+                likeIcon.classList.remove('liked');
+                likeIcon.querySelector('i').style.color = '#fff';
+            }
+            
+            // 更新点赞数
+            likeCountEl.textContent = formatLikeCount(video.likes);
+        }
+        
+        // 格式化点赞数显示
+        function formatLikeCount(count) {
+            if (count >= 10000) {
+                return (count / 10000).toFixed(1) + '万';
+            }
+            return count.toString();
+        }
+        
+        // 初始化视频流
+        function initVideoFeed() {
+            videoContainer.innerHTML = '';
+            
+            videoData.forEach(video => {
+                const videoItem = document.createElement('div');
+                videoItem.className = 'video-item';
+                videoItem.setAttribute('data-video-id', video.id);
+                
+                const isLiked = currentUser && video.likedBy.includes(currentUser.id);
+                const likeIconClass = isLiked ? 'action-icon liked' : 'action-icon';
+                const likeIconColor = isLiked ? '#ff6600' : '#fff';
+                
+                videoItem.innerHTML = `
+                    <div class="sound-control" onclick="toggleMute(this)">
+                        <i class="fas fa-volume-mute sound-icon"></i>
+                    </div>
+                    <video class="video-player" loop muted>
+                        <source src="${video.videoUrl}" type="video/mp4">
+                        您的浏览器不支持视频播放
+                    </video>
+                    <div class="video-info">
+                        <div class="username">@${video.username}</div>
+                        <div class="video-desc">${video.description}</div>
+                        <div class="music-info">
+                            <i class="fas fa-music music-icon"></i>
+                            ${video.music}
+                        </div>
+                    </div>
+                    <div class="action-bar">
+                        <div class="action-item">
+                            <img class="avatar" src="${video.avatar}" alt="${video.username}">
+                            <div class="action-icon">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="action-item" onclick="likeVideo(${video.id})">
+                            <div class="${likeIconClass}">
+                                <i class="fas fa-heart" style="color: ${likeIconColor}"></i>
+                            </div>
+                            <div class="action-count">${formatLikeCount(video.likes)}</div>
+                        </div>
+                        <div class="action-item" onclick="openComment(${video.id})">
+                            <div class="action-icon">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <div class="action-count">${video.comments}</div>
+                        </div>
+                        <div class="action-item">
+                            <div class="action-icon">
+                                <i class="fas fa-share"></i>
+                            </div>
+                            <div class="action-count">${video.shares}</div>
+                        </div>
+                    </div>
+                `;
+                videoContainer.appendChild(videoItem);
+            });
+            
+            // 添加加载更多指示器
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.className = 'loading';
+            loadingIndicator.innerHTML = '<div class="spinner"></div>';
+            videoContainer.appendChild(loadingIndicator);
+            
+            // 视频播放控制
+            const videos = document.querySelectorAll('.video-player');
+            
+            // 当视频进入视口时播放
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target;
+                    if (entry.isIntersecting) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                });
+            }, { threshold: 0.7 });
+            
+            videos.forEach(video => {
+                observer.observe(video);
+            });
+        }
+        
+        // 切换静音/取消静音
+        function toggleMute(soundControl) {
+            const videoItem = soundControl.closest('.video-item');
+            const videoPlayer = videoItem.querySelector('.video-player');
+            const soundIcon = soundControl.querySelector('.sound-icon');
+            
+            if (videoPlayer.muted) {
+                videoPlayer.muted = false;
+                soundIcon.className = 'fas fa-volume-up sound-icon';
+            } else {
+                videoPlayer.muted = true;
+                soundIcon.className = 'fas fa-volume-mute sound-icon';
+            }
+        }
+        
+        // 初始化个人主页内容
+        function initProfileContent() {
+            profileContent.innerHTML = '';
+            
+            // 显示当前用户的视频
+            const userVideos = videoData.filter(video => video.userId === currentUser?.id);
+            
+            if (userVideos.length > 0) {
+                userVideos.forEach(video => {
+                    const videoElement = document.createElement('div');
+                    videoElement.className = 'profile-video';
+                    videoElement.innerHTML = `
+                        <video class="video-player" loop muted>
+                            <source src="${video.videoUrl}" type="video/mp4">
+                        </video>
+                        <div class="video-overlay">
+                            <i class="fas fa-heart" style="margin-right: 3px;"></i>
+                            <span>${formatLikeCount(video.likes)}</span>
+                        </div>
+                    `;
+                    profileContent.appendChild(videoElement);
+                });
+            } else {
+                // 如果没有视频，显示提示
+                const noVideos = document.createElement('div');
+                noVideos.style.gridColumn = '1 / 4';
+                noVideos.style.textAlign = 'center';
+                noVideos.style.padding = '40px 0';
+                noVideos.style.color = '#999';
+                noVideos.innerHTML = `
+                    <i class="fas fa-video" style="font-size: 48px; margin-bottom: 15px;"></i>
+                    <div>暂无作品</div>
+                    <div style="font-size: 12px; margin-top: 10px;">快去发布你的第一个视频吧！</div>
+                `;
+                profileContent.appendChild(noVideos);
+            }
+        }
+        
+        // 导航切换
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.getAttribute('data-page');
+                
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                
+                // 隐藏所有页面
+                videoContainer.style.display = 'none';
+                profilePage.style.display = 'none';
+                
+                if (page === 'profile') {
+                    if (!currentUser) {
+                        authModal.style.display = 'flex';
+                        // 重置导航状态
+                        navItems[0].classList.add('active');
+                        item.classList.remove('active');
+                        return;
+                    }
+                    
+                    profilePage.style.display = 'block';
+                    initProfileContent();
+                } else {
+                    videoContainer.style.display = 'block';
+                }
+            });
+        });
+        
+        // 用户头像点击事件
+        userAvatar.addEventListener('click', () => {
+            if (currentUser) {
+                videoContainer.style.display = 'none';
+                profilePage.style.display = 'block';
+                
+                navItems.forEach(nav => nav.classList.remove('active'));
+                profileNav.classList.add('active');
+                
+                initProfileContent();
+            }
+        });
+        
+        // 初始化
+        function init() {
+            checkLoginStatus();
+            initVideoFeed();
+            initProfileContent();
+        }
+        
+        // 启动应用
+        init();
+        
+        // 模拟评论功能
+        function openComment(videoId) {
+            if (!currentUser) {
+                authModal.style.display = 'flex';
+                return;
+            }
+            alert('评论功能即将开放，敬请期待！');
+        }
+    </script>
+</body>
+</html>
