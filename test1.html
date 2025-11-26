@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>快手网页版 - 记录世界记录你</title>
+    <title>KC - 发现精彩短视频</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -59,8 +59,8 @@
         }
         
         .modal-tab.active {
-            color: #ff6600;
-            border-bottom: 2px solid #ff6600;
+            color: #ff3366;
+            border-bottom: 2px solid #ff3366;
         }
         
         .modal-form {
@@ -88,12 +88,12 @@
         
         .form-input:focus {
             outline: none;
-            border-color: #ff6600;
+            border-color: #ff3366;
         }
         
         .btn {
             padding: 12px;
-            background-color: #ff6600;
+            background-color: #ff3366;
             color: #fff;
             border: none;
             border-radius: 6px;
@@ -105,7 +105,7 @@
         }
         
         .btn:hover {
-            background-color: #ff8533;
+            background-color: #ff4d7d;
         }
         
         .btn-full {
@@ -120,7 +120,7 @@
         }
         
         .modal-link {
-            color: #ff6600;
+            color: #ff3366;
             cursor: pointer;
         }
         
@@ -150,7 +150,7 @@
         }
         
         .logo {
-            color: #ff6600;
+            color: #ff3366;
             font-weight: bold;
             font-size: 22px;
         }
@@ -169,7 +169,7 @@
         }
         
         .login-btn {
-            background-color: #ff6600;
+            background-color: #ff3366;
             color: #fff;
             border: none;
             padding: 6px 12px;
@@ -213,11 +213,11 @@
         }
         
         .nav-item.active {
-            color: #ff6600;
+            color: #ff3366;
         }
         
         .nav-item:hover {
-            color: #ff6600;
+            color: #ff3366;
         }
         
         .nav-icon {
@@ -317,7 +317,7 @@
         }
         
         .action-icon.liked {
-            background-color: rgba(255, 102, 0, 0.2);
+            background-color: rgba(255, 51, 102, 0.2);
         }
         
         .action-count {
@@ -375,6 +375,22 @@
             height: 80px;
             border-radius: 50%;
             margin-right: 15px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .avatar-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: #ff3366;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
         }
         
         .profile-info {
@@ -434,11 +450,11 @@
         }
         
         .profile-btn.primary {
-            background-color: #ff6600;
+            background-color: #ff3366;
         }
         
         .profile-btn.primary:hover {
-            background-color: #ff8533;
+            background-color: #ff4d7d;
         }
         
         .profile-tabs {
@@ -455,8 +471,8 @@
         }
         
         .profile-tab.active {
-            color: #ff6600;
-            border-bottom: 2px solid #ff6600;
+            color: #ff3366;
+            border-bottom: 2px solid #ff3366;
         }
         
         .profile-content {
@@ -513,7 +529,7 @@
             height: 24px;
             border: 3px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top-color: #ff6600;
+            border-top-color: #ff3366;
             animation: spin 1s linear infinite;
         }
         
@@ -524,7 +540,7 @@
         /* 邮箱验证提示 */
         .email-hint {
             font-size: 12px;
-            color: #ff6600;
+            color: #ff3366;
             margin-top: 5px;
             display: none;
         }
@@ -552,7 +568,7 @@
         
         /* 错误提示 */
         .error-message {
-            color: #ff6600;
+            color: #ff3366;
             font-size: 12px;
             margin-top: 5px;
             display: none;
@@ -566,7 +582,7 @@
             transform: translateX(-50%);
             width: 60px;
             height: 60px;
-            background-color: #ff6600;
+            background-color: #ff3366;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -574,13 +590,314 @@
             color: white;
             font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(255, 51, 102, 0.3);
             z-index: 90;
             transition: transform 0.3s;
         }
         
         .publish-animation:hover {
             transform: translateX(-50%) scale(1.1);
+        }
+        
+        /* 评论模态框 */
+        .comment-modal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70vh;
+            background-color: #1a1a1a;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .comment-header {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .comment-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        
+        .comment-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-user {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .comment-text {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .comment-actions {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+        
+        .comment-like {
+            font-size: 12px;
+            color: #999;
+            margin-left: 15px;
+        }
+        
+        .comment-input {
+            padding: 15px;
+            border-top: 1px solid #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .comment-input input {
+            flex: 1;
+            padding: 10px 15px;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .comment-input input:focus {
+            outline: none;
+            border-color: #ff3366;
+        }
+        
+        .comment-send {
+            margin-left: 10px;
+            color: #ff3366;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        /* 分享模态框 */
+        .share-modal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1a1a1a;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .share-header {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .share-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 20px;
+            gap: 15px;
+        }
+        
+        .share-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .share-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+        
+        .share-label {
+            font-size: 12px;
+            color: #ddd;
+        }
+        
+        /* 头像上传模态框 */
+        .avatar-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            display: none;
+        }
+        
+        .avatar-container {
+            background-color: #1a1a1a;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .avatar-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .avatar-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background-color: #2a2a2a;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .avatar-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .avatar-btn {
+            flex: 1;
+            margin: 0 5px;
+        }
+        
+        /* 发布视频模态框 */
+        .publish-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            display: none;
+        }
+        
+        .publish-container {
+            background-color: #1a1a1a;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .publish-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .publish-preview {
+            width: 100%;
+            aspect-ratio: 9/16;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .publish-preview video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .publish-upload {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .publish-upload-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .publish-upload-btn:hover {
+            background-color: #444;
+        }
+        
+        .publish-form {
+            margin-bottom: 20px;
+        }
+        
+        .publish-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .publish-btn {
+            flex: 1;
+            margin: 0 5px;
+        }
+        
+        /* 通知 */
+        .notification {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ff3366;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            z-index: 1000;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -633,9 +950,124 @@
         </div>
     </div>
     
+    <!-- 头像上传模态框 -->
+    <div class="avatar-modal" id="avatarModal">
+        <div class="avatar-container">
+            <div class="close-modal" id="closeAvatar">&times;</div>
+            <div class="avatar-title">更换头像</div>
+            <div class="avatar-preview" id="avatarPreview">
+                <i class="fas fa-user" style="font-size: 60px; color: #666;"></i>
+            </div>
+            <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+            <div class="avatar-actions">
+                <button class="btn avatar-btn" id="selectAvatar">选择图片</button>
+                <button class="btn avatar-btn" id="saveAvatar">保存</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 发布视频模态框 -->
+    <div class="publish-modal" id="publishModal">
+        <div class="publish-container">
+            <div class="close-modal" id="closePublish">&times;</div>
+            <div class="publish-title">发布视频</div>
+            <div class="publish-preview" id="videoPreview">
+                <i class="fas fa-video" style="font-size: 60px; color: #666;"></i>
+            </div>
+            <div class="publish-upload">
+                <label for="videoInput" class="publish-upload-btn">
+                    <i class="fas fa-upload"></i> 选择视频文件
+                </label>
+                <input type="file" id="videoInput" accept="video/*" style="display: none;">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-input" placeholder="视频描述" id="videoDesc">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-input" placeholder="背景音乐" id="videoMusic">
+            </div>
+            <div class="publish-actions">
+                <button class="btn publish-btn" id="cancelPublish">取消</button>
+                <button class="btn publish-btn" id="submitPublish">发布</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 评论模态框 -->
+    <div class="comment-modal" id="commentModal">
+        <div class="comment-header">
+            <span>评论</span>
+            <div class="close-modal" id="closeComment">&times;</div>
+        </div>
+        <div class="comment-list" id="commentList">
+            <!-- 评论将通过JavaScript动态添加 -->
+        </div>
+        <div class="comment-input">
+            <input type="text" placeholder="说点什么..." id="commentInput">
+            <div class="comment-send" id="sendComment">
+                <i class="fas fa-paper-plane"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 分享模态框 -->
+    <div class="share-modal" id="shareModal">
+        <div class="share-header">分享到</div>
+        <div class="share-options">
+            <div class="share-option">
+                <div class="share-icon" style="background-color: #07c160;">
+                    <i class="fab fa-weixin" style="color: white;"></i>
+                </div>
+                <div class="share-label">微信</div>
+            </div>
+            <div class="share-option">
+                <div class="share-icon" style="background-color: #1da1f2;">
+                    <i class="fab fa-twitter" style="color: white;"></i>
+                </div>
+                <div class="share-label">Twitter</div>
+            </div>
+            <div class="share-option">
+                <div class="share-icon" style="background-color: #1877f2;">
+                    <i class="fab fa-facebook-f" style="color: white;"></i>
+                </div>
+                <div class="share-label">Facebook</div>
+            </div>
+            <div class="share-option">
+                <div class="share-icon" style="background-color: #ff3366;">
+                    <i class="fas fa-share-alt" style="color: white;"></i>
+                </div>
+                <div class="share-label">KC</div>
+            </div>
+            <div class="share-option">
+                <div class="share-icon" style="background-color: #25d366;">
+                    <i class="fab fa-whatsapp" style="color: white;"></i>
+                </div>
+                <div class="share-label">WhatsApp</div>
+            </div>
+            <div class="share-option">
+                <div class="share-icon" style="background-color: #0088cc;">
+                    <i class="fab fa-telegram" style="color: white;"></i>
+                </div>
+                <div class="share-label">Telegram</div>
+            </div>
+            <div class="share-option">
+                <div class="share-icon" style="background-color: #ff4500;">
+                    <i class="fab fa-reddit" style="color: white;"></i>
+                </div>
+                <div class="share-label">Reddit</div>
+            </div>
+            <div class="share-option">
+                <div class="share-icon" style="background-color: #333;">
+                    <i class="fas fa-link" style="color: white;"></i>
+                </div>
+                <div class="share-label">复制链接</div>
+            </div>
+        </div>
+    </div>
+    
     <!-- 顶部导航栏 -->
     <div class="header">
-        <div class="logo">快手</div>
+        <div class="logo">KC</div>
         <div class="header-actions">
             <div class="search-icon">
                 <i class="fas fa-search"></i>
@@ -656,10 +1088,15 @@
     <!-- 用户主页 -->
     <div class="profile-page" id="profilePage">
         <div class="profile-header">
-            <img src="https://randomuser.me/api/portraits/men/1.jpg" class="profile-avatar" id="profileAvatar">
+            <div class="profile-avatar" id="profileAvatarContainer">
+                <img src="https://randomuser.me/api/portraits/men/1.jpg" class="profile-avatar" id="profileAvatar">
+                <div class="avatar-edit" id="editAvatar">
+                    <i class="fas fa-camera"></i>
+                </div>
+            </div>
             <div class="profile-info">
                 <div class="profile-name" id="profileName">用户名</div>
-                <div class="profile-id" id="profileId">快手号: 123456789</div>
+                <div class="profile-id" id="profileId">KC号: 123456789</div>
                 <div class="profile-stats">
                     <div class="stat-item">
                         <div class="stat-count" id="followCount">120</div>
@@ -734,10 +1171,10 @@
     <script>
         // 模拟用户数据
         let currentUser = null;
-        const users = JSON.parse(localStorage.getItem('kuaishou_users')) || [];
+        const users = JSON.parse(localStorage.getItem('kc_users')) || [];
         
         // 模拟视频数据 - 使用更真实的视频URL
-        let videoData = JSON.parse(localStorage.getItem('kuaishou_videos')) || [
+        let videoData = JSON.parse(localStorage.getItem('kc_videos')) || [
             {
                 id: 1,
                 username: "旅行达人",
@@ -749,7 +1186,11 @@
                 comments: 56,
                 shares: 12,
                 userId: 1,
-                likedBy: []
+                likedBy: [],
+                commentsList: [
+                    { id: 1, username: "用户A", avatar: "https://randomuser.me/api/portraits/women/12.jpg", text: "太美了！", likes: 5 },
+                    { id: 2, username: "用户B", avatar: "https://randomuser.me/api/portraits/men/24.jpg", text: "我也想去这里！", likes: 3 }
+                ]
             },
             {
                 id: 2,
@@ -762,7 +1203,10 @@
                 comments: 23,
                 shares: 5,
                 userId: 2,
-                likedBy: []
+                likedBy: [],
+                commentsList: [
+                    { id: 1, username: "用户C", avatar: "https://randomuser.me/api/portraits/women/33.jpg", text: "看起来好好吃！", likes: 2 }
+                ]
             },
             {
                 id: 3,
@@ -775,33 +1219,8 @@
                 comments: 34,
                 shares: 8,
                 userId: 3,
-                likedBy: []
-            },
-            {
-                id: 4,
-                username: "萌宠日记",
-                avatar: "https://randomuser.me/api/portraits/women/68.jpg",
-                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-white-kitten-1192-large.mp4",
-                description: "我家猫咪的日常，太可爱了！",
-                music: "可爱宠物配乐 - 萌萌哒",
-                likes: 1567,
-                comments: 89,
-                shares: 23,
-                userId: 4,
-                likedBy: []
-            },
-            {
-                id: 5,
-                username: "手工达人",
-                avatar: "https://randomuser.me/api/portraits/women/33.jpg",
-                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-potter-making-a-clay-pot-31545-large.mp4",
-                description: "亲手制作的陶瓷杯，每一件都是独一无二的艺术品",
-                music: "舒缓手工BGM - 创造时光",
-                likes: 723,
-                comments: 45,
-                shares: 9,
-                userId: 5,
-                likedBy: []
+                likedBy: [],
+                commentsList: []
             }
         ];
         
@@ -829,6 +1248,34 @@
         const registerEmail = document.getElementById('registerEmail');
         const emailHint = document.getElementById('emailHint');
         const publishBtn = document.getElementById('publishBtn');
+        const commentModal = document.getElementById('commentModal');
+        const closeComment = document.getElementById('closeComment');
+        const commentList = document.getElementById('commentList');
+        const commentInput = document.getElementById('commentInput');
+        const sendComment = document.getElementById('sendComment');
+        const shareModal = document.getElementById('shareModal');
+        const avatarModal = document.getElementById('avatarModal');
+        const closeAvatar = document.getElementById('closeAvatar');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const avatarInput = document.getElementById('avatarInput');
+        const selectAvatar = document.getElementById('selectAvatar');
+        const saveAvatar = document.getElementById('saveAvatar');
+        const editAvatar = document.getElementById('editAvatar');
+        const profileAvatarContainer = document.getElementById('profileAvatarContainer');
+        const publishModal = document.getElementById('publishModal');
+        const closePublish = document.getElementById('closePublish');
+        const videoPreview = document.getElementById('videoPreview');
+        const videoInput = document.getElementById('videoInput');
+        const cancelPublish = document.getElementById('cancelPublish');
+        const submitPublish = document.getElementById('submitPublish');
+        const videoDesc = document.getElementById('videoDesc');
+        const videoMusic = document.getElementById('videoMusic');
+        const openPublish = document.getElementById('openPublish');
+        
+        // 当前正在操作的对象
+        let currentVideoId = null;
+        let newAvatar = null;
+        let newVideo = null;
         
         // 邮箱验证函数
         function validateEmail(email) {
@@ -853,7 +1300,7 @@
         registerEmail.addEventListener('blur', function() {
             if (this.value && !validateEmail(this.value)) {
                 emailHint.style.display = 'block';
-                this.style.borderColor = '#ff6600';
+                this.style.borderColor = '#ff3366';
             } else {
                 emailHint.style.display = 'none';
                 this.style.borderColor = '#444';
@@ -922,7 +1369,7 @@
             
             if (user) {
                 currentUser = user;
-                localStorage.setItem('kuaishou_current_user', JSON.stringify(user));
+                localStorage.setItem('kc_current_user', JSON.stringify(user));
                 
                 // 更新UI
                 showAuth.style.display = 'none';
@@ -962,7 +1409,7 @@
             // 验证邮箱格式
             if (!validateEmail(email)) {
                 emailHint.style.display = 'block';
-                registerEmail.style.borderColor = '#ff6600';
+                registerEmail.style.borderColor = '#ff3366';
                 showNotification('请输入有效的邮箱地址！');
                 return;
             }
@@ -1005,15 +1452,15 @@
                 followCount: Math.floor(Math.random() * 200),
                 fansCount: Math.floor(Math.random() * 1000),
                 likeCount: Math.floor(Math.random() * 5000),
-                kuaishouId: 'ks' + Date.now().toString().slice(-8)
+                kcId: 'kc' + Date.now().toString().slice(-8)
             };
             
             users.push(newUser);
-            localStorage.setItem('kuaishou_users', JSON.stringify(users));
+            localStorage.setItem('kc_users', JSON.stringify(users));
             
             // 自动登录
             currentUser = newUser;
-            localStorage.setItem('kuaishou_current_user', JSON.stringify(newUser));
+            localStorage.setItem('kc_current_user', JSON.stringify(newUser));
             
             // 更新UI
             showAuth.style.display = 'none';
@@ -1037,19 +1484,7 @@
         function showNotification(message) {
             // 创建通知元素
             const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 70px;
-                left: 50%;
-                transform: translateX(-50%);
-                background-color: #ff6600;
-                color: white;
-                padding: 12px 20px;
-                border-radius: 6px;
-                z-index: 1000;
-                font-size: 14px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            `;
+            notification.className = 'notification';
             notification.textContent = message;
             document.body.appendChild(notification);
             
@@ -1061,7 +1496,7 @@
         
         // 检查是否已登录
         function checkLoginStatus() {
-            const savedUser = localStorage.getItem('kuaishou_current_user');
+            const savedUser = localStorage.getItem('kc_current_user');
             
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
@@ -1078,7 +1513,7 @@
         function updateProfileInfo() {
             if (currentUser) {
                 profileName.textContent = currentUser.username;
-                profileId.textContent = `快手号: ${currentUser.kuaishouId}`;
+                profileId.textContent = `KC号: ${currentUser.kcId}`;
                 profileAvatar.src = currentUser.avatar;
                 followCount.textContent = currentUser.followCount;
                 fansCount.textContent = currentUser.fansCount > 1000 ? 
@@ -1110,7 +1545,7 @@
                 const videoOwner = users.find(u => u.id === video.userId);
                 if (videoOwner) {
                     videoOwner.likeCount--;
-                    localStorage.setItem('kuaishou_users', JSON.stringify(users));
+                    localStorage.setItem('kc_users', JSON.stringify(users));
                 }
             } else {
                 // 点赞
@@ -1121,7 +1556,7 @@
                 const videoOwner = users.find(u => u.id === video.userId);
                 if (videoOwner) {
                     videoOwner.likeCount++;
-                    localStorage.setItem('kuaishou_users', JSON.stringify(users));
+                    localStorage.setItem('kc_users', JSON.stringify(users));
                 }
                 
                 // 创建点赞动画
@@ -1129,7 +1564,7 @@
             }
             
             // 保存更新后的视频数据
-            localStorage.setItem('kuaishou_videos', JSON.stringify(videoData));
+            localStorage.setItem('kc_videos', JSON.stringify(videoData));
             
             // 更新UI
             updateLikeUI(videoId);
@@ -1150,7 +1585,7 @@
             for (let i = 0; i < 5; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'like-animation';
-                heart.innerHTML = '<i class="fas fa-heart" style="color: #ff6600; font-size: 24px;"></i>';
+                heart.innerHTML = '<i class="fas fa-heart" style="color: #ff3366; font-size: 24px;"></i>';
                 heart.style.left = `${rect.left + rect.width / 2}px`;
                 heart.style.top = `${rect.top}px`;
                 
@@ -1189,7 +1624,7 @@
             // 更新图标和样式
             if (isLiked) {
                 likeIcon.classList.add('liked');
-                likeIcon.querySelector('i').style.color = '#ff6600';
+                likeIcon.querySelector('i').style.color = '#ff3366';
             } else {
                 likeIcon.classList.remove('liked');
                 likeIcon.querySelector('i').style.color = '#fff';
@@ -1218,7 +1653,7 @@
                 
                 const isLiked = currentUser && video.likedBy.includes(currentUser.id);
                 const likeIconClass = isLiked ? 'action-icon liked' : 'action-icon';
-                const likeIconColor = isLiked ? '#ff6600' : '#fff';
+                const likeIconColor = isLiked ? '#ff3366' : '#fff';
                 
                 videoItem.innerHTML = `
                     <div class="sound-control" onclick="toggleMute(this)">
@@ -1255,7 +1690,7 @@
                             </div>
                             <div class="action-count">${video.comments}</div>
                         </div>
-                        <div class="action-item">
+                        <div class="action-item" onclick="openShare(${video.id})">
                             <div class="action-icon">
                                 <i class="fas fa-share"></i>
                             </div>
@@ -1368,6 +1803,15 @@
                     
                     profilePage.style.display = 'block';
                     initProfileContent();
+                } else if (page === 'publish') {
+                    if (!currentUser) {
+                        authModal.style.display = 'flex';
+                        // 重置导航状态
+                        navItems[0].classList.add('active');
+                        item.classList.remove('active');
+                        return;
+                    }
+                    openPublishModal();
                 } else {
                     videoContainer.style.display = 'block';
                 }
@@ -1393,7 +1837,267 @@
                 authModal.style.display = 'flex';
                 return;
             }
-            showNotification('发布功能即将开放，敬请期待！');
+            openPublishModal();
+        });
+        
+        // 顶部相机图标点击事件
+        openPublish.addEventListener('click', () => {
+            if (!currentUser) {
+                authModal.style.display = 'flex';
+                return;
+            }
+            openPublishModal();
+        });
+        
+        // 打开发布模态框
+        function openPublishModal() {
+            publishModal.style.display = 'flex';
+            videoPreview.innerHTML = '<i class="fas fa-video" style="font-size: 60px; color: #666;"></i>';
+            videoDesc.value = '';
+            videoMusic.value = '';
+            newVideo = null;
+        }
+        
+        // 关闭发布模态框
+        closePublish.addEventListener('click', () => {
+            publishModal.style.display = 'none';
+        });
+        
+        cancelPublish.addEventListener('click', () => {
+            publishModal.style.display = 'none';
+        });
+        
+        // 视频上传处理
+        videoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const videoURL = URL.createObjectURL(file);
+                videoPreview.innerHTML = `<video src="${videoURL}" controls style="width: 100%; height: 100%; object-fit: cover;"></video>`;
+                newVideo = file;
+            }
+        });
+        
+        // 提交发布
+        submitPublish.addEventListener('click', () => {
+            if (!newVideo) {
+                showNotification('请先选择视频文件！');
+                return;
+            }
+            
+            // 创建新视频对象
+            const newVideoObj = {
+                id: Date.now(),
+                username: currentUser.username,
+                avatar: currentUser.avatar,
+                videoUrl: URL.createObjectURL(newVideo),
+                description: videoDesc.value || '分享我的精彩瞬间',
+                music: videoMusic.value || '原创音乐',
+                likes: 0,
+                comments: 0,
+                shares: 0,
+                userId: currentUser.id,
+                likedBy: [],
+                commentsList: []
+            };
+            
+            // 添加到视频数据
+            videoData.unshift(newVideoObj);
+            localStorage.setItem('kc_videos', JSON.stringify(videoData));
+            
+            // 关闭模态框
+            publishModal.style.display = 'none';
+            
+            // 显示成功消息
+            showNotification('视频发布成功！');
+            
+            // 重新初始化视频流
+            initVideoFeed();
+            
+            // 切换到首页
+            navItems.forEach(nav => nav.classList.remove('active'));
+            navItems[0].classList.add('active');
+            videoContainer.style.display = 'block';
+            profilePage.style.display = 'none';
+        });
+        
+        // 打开评论模态框
+        function openComment(videoId) {
+            if (!currentUser) {
+                authModal.style.display = 'flex';
+                return;
+            }
+            
+            currentVideoId = videoId;
+            const video = videoData.find(v => v.id === videoId);
+            if (!video) return;
+            
+            // 更新评论列表
+            commentList.innerHTML = '';
+            video.commentsList.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment-item';
+                commentElement.innerHTML = `
+                    <img src="${comment.avatar}" class="comment-avatar">
+                    <div class="comment-content">
+                        <div class="comment-user">${comment.username}</div>
+                        <div class="comment-text">${comment.text}</div>
+                        <div class="comment-actions">
+                            <span class="comment-time">2小时前</span>
+                            <span class="comment-like">${comment.likes}</span>
+                        </div>
+                    </div>
+                `;
+                commentList.appendChild(commentElement);
+            });
+            
+            // 显示评论模态框
+            commentModal.style.display = 'flex';
+        }
+        
+        // 关闭评论模态框
+        closeComment.addEventListener('click', () => {
+            commentModal.style.display = 'none';
+        });
+        
+        // 发送评论
+        sendComment.addEventListener('click', () => {
+            const text = commentInput.value.trim();
+            if (!text) return;
+            
+            const video = videoData.find(v => v.id === currentVideoId);
+            if (!video) return;
+            
+            // 添加新评论
+            const newComment = {
+                id: Date.now(),
+                username: currentUser.username,
+                avatar: currentUser.avatar,
+                text: text,
+                likes: 0
+            };
+            
+            video.commentsList.push(newComment);
+            video.comments++;
+            
+            // 保存更新后的视频数据
+            localStorage.setItem('kc_videos', JSON.stringify(videoData));
+            
+            // 更新评论列表
+            const commentElement = document.createElement('div');
+            commentElement.className = 'comment-item';
+            commentElement.innerHTML = `
+                <img src="${newComment.avatar}" class="comment-avatar">
+                <div class="comment-content">
+                    <div class="comment-user">${newComment.username}</div>
+                    <div class="comment-text">${newComment.text}</div>
+                    <div class="comment-actions">
+                        <span class="comment-time">刚刚</span>
+                        <span class="comment-like">${newComment.likes}</span>
+                    </div>
+                </div>
+            `;
+            commentList.appendChild(commentElement);
+            
+            // 清空输入框
+            commentInput.value = '';
+            
+            // 更新UI
+            updateCommentUI(currentVideoId);
+        });
+        
+        // 更新评论UI
+        function updateCommentUI(videoId) {
+            const video = videoData.find(v => v.id === videoId);
+            if (!video) return;
+            
+            const videoItem = document.querySelector(`[data-video-id="${videoId}"]`);
+            if (!videoItem) return;
+            
+            const commentBtn = videoItem.querySelector('.action-item:nth-child(3)');
+            const commentCountEl = commentBtn.querySelector('.action-count');
+            
+            // 更新评论数
+            commentCountEl.textContent = video.comments;
+        }
+        
+        // 打开分享模态框
+        function openShare(videoId) {
+            if (!currentUser) {
+                authModal.style.display = 'flex';
+                return;
+            }
+            
+            currentVideoId = videoId;
+            shareModal.style.display = 'flex';
+        }
+        
+        // 关闭分享模态框
+        document.addEventListener('click', (e) => {
+            if (e.target === shareModal) {
+                shareModal.style.display = 'none';
+            }
+        });
+        
+        // 编辑头像
+        editAvatar.addEventListener('click', () => {
+            if (!currentUser) {
+                authModal.style.display = 'flex';
+                return;
+            }
+            
+            avatarModal.style.display = 'flex';
+            avatarPreview.innerHTML = `<img src="${currentUser.avatar}">`;
+            newAvatar = null;
+        });
+        
+        // 关闭头像模态框
+        closeAvatar.addEventListener('click', () => {
+            avatarModal.style.display = 'none';
+        });
+        
+        // 选择头像
+        selectAvatar.addEventListener('click', () => {
+            avatarInput.click();
+        });
+        
+        // 头像上传处理
+        avatarInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const imageURL = URL.createObjectURL(file);
+                avatarPreview.innerHTML = `<img src="${imageURL}">`;
+                newAvatar = file;
+            }
+        });
+        
+        // 保存头像
+        saveAvatar.addEventListener('click', () => {
+            if (!newAvatar) {
+                showNotification('请先选择头像图片！');
+                return;
+            }
+            
+            // 更新用户头像
+            const imageURL = URL.createObjectURL(newAvatar);
+            currentUser.avatar = imageURL;
+            localStorage.setItem('kc_current_user', JSON.stringify(currentUser));
+            
+            // 更新用户数据
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            if (userIndex !== -1) {
+                users[userIndex].avatar = imageURL;
+                localStorage.setItem('kc_users', JSON.stringify(users));
+            }
+            
+            // 更新UI
+            userAvatar.src = imageURL;
+            profileAvatar.src = imageURL;
+            
+            // 关闭模态框
+            avatarModal.style.display = 'none';
+            
+            // 显示成功消息
+            showNotification('头像更新成功！');
         });
         
         // 初始化
@@ -1405,15 +2109,6 @@
         
         // 启动应用
         init();
-        
-        // 模拟评论功能
-        function openComment(videoId) {
-            if (!currentUser) {
-                authModal.style.display = 'flex';
-                return;
-            }
-            showNotification('评论功能即将开放，敬请期待！');
-        }
     </script>
 </body>
 </html>
