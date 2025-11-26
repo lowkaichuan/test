@@ -73,6 +73,7 @@
         
         .form-group {
             margin-bottom: 20px;
+            position: relative;
         }
         
         .form-input {
@@ -100,6 +101,11 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+        
+        .btn:hover {
+            background-color: #ff8533;
         }
         
         .btn-full {
@@ -203,9 +209,14 @@
             font-size: 10px;
             color: #999;
             cursor: pointer;
+            transition: color 0.2s;
         }
         
         .nav-item.active {
+            color: #ff6600;
+        }
+        
+        .nav-item:hover {
             color: #ff6600;
         }
         
@@ -299,6 +310,10 @@
             justify-content: center;
             background-color: rgba(0, 0, 0, 0.2);
             transition: all 0.2s ease;
+        }
+        
+        .action-icon:hover {
+            transform: scale(1.1);
         }
         
         .action-icon.liked {
@@ -411,10 +426,19 @@
             margin-right: 10px;
             font-size: 14px;
             cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .profile-btn:hover {
+            background-color: #444;
         }
         
         .profile-btn.primary {
             background-color: #ff6600;
+        }
+        
+        .profile-btn.primary:hover {
+            background-color: #ff8533;
         }
         
         .profile-tabs {
@@ -525,6 +549,39 @@
             color: white;
             font-size: 20px;
         }
+        
+        /* 错误提示 */
+        .error-message {
+            color: #ff6600;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* 发布按钮动画 */
+        .publish-animation {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background-color: #ff6600;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3);
+            z-index: 90;
+            transition: transform 0.3s;
+        }
+        
+        .publish-animation:hover {
+            transform: translateX(-50%) scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -540,6 +597,7 @@
             <form class="modal-form active" id="loginForm">
                 <div class="form-group">
                     <input type="text" class="form-input" placeholder="邮箱/用户名" id="loginUsername" required>
+                    <div class="error-message" id="loginError"></div>
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-input" placeholder="密码" id="loginPassword" required>
@@ -553,6 +611,7 @@
             <form class="modal-form" id="registerForm">
                 <div class="form-group">
                     <input type="text" class="form-input" placeholder="用户名" id="registerUsername" required>
+                    <div class="error-message" id="usernameError"></div>
                 </div>
                 <div class="form-group">
                     <input type="email" class="form-input" placeholder="邮箱地址 (例如: example@gmail.com)" id="registerEmail" required>
@@ -560,9 +619,11 @@
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-input" placeholder="密码" id="registerPassword" required>
+                    <div class="error-message" id="passwordError"></div>
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-input" placeholder="确认密码" id="registerConfirmPassword" required>
+                    <div class="error-message" id="confirmPasswordError"></div>
                 </div>
                 <button type="submit" class="btn btn-full">注册</button>
                 <div class="modal-footer">
@@ -665,33 +726,38 @@
         </div>
     </div>
     
+    <!-- 发布按钮 -->
+    <div class="publish-animation" id="publishBtn">
+        <i class="fas fa-plus"></i>
+    </div>
+    
     <script>
         // 模拟用户数据
         let currentUser = null;
         const users = JSON.parse(localStorage.getItem('kuaishou_users')) || [];
         
-        // 模拟视频数据
+        // 模拟视频数据 - 使用更真实的视频URL
         let videoData = JSON.parse(localStorage.getItem('kuaishou_videos')) || [
             {
                 id: 1,
-                username: "用户1",
-                avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-                videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                description: "这是一个有趣的视频，欢迎大家点赞关注！",
-                music: "背景音乐 - 流行歌曲",
+                username: "旅行达人",
+                avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
+                description: "美丽的海边日落，太治愈了！🌅",
+                music: "治愈系纯音乐 - 海边日落",
                 likes: 1234,
                 comments: 56,
                 shares: 12,
                 userId: 1,
-                likedBy: [] // 存储点赞用户的ID
+                likedBy: []
             },
             {
                 id: 2,
-                username: "用户2",
-                avatar: "https://randomuser.me/api/portraits/women/2.jpg",
-                videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                description: "今天天气真好，出去走走~",
-                music: "轻音乐 - 自然之声",
+                username: "美食探店",
+                avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-cooking-ingredients-in-a-pan-31506-large.mp4",
+                description: "这家餐厅的招牌菜真的绝了！强烈推荐！",
+                music: "轻快美食BGM - 美味时刻",
                 likes: 567,
                 comments: 23,
                 shares: 5,
@@ -700,15 +766,41 @@
             },
             {
                 id: 3,
-                username: "用户3",
-                avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-                videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                description: "分享一个生活小技巧，超级实用！",
-                music: "原创音乐 - 我的创作",
+                username: "健身教练",
+                avatar: "https://randomuser.me/api/portraits/men/22.jpg",
+                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-girl-in-yoga-position-1171-large.mp4",
+                description: "每天坚持10分钟，轻松拥有好身材！",
+                music: "动感健身音乐 - 活力四射",
                 likes: 890,
                 comments: 34,
                 shares: 8,
                 userId: 3,
+                likedBy: []
+            },
+            {
+                id: 4,
+                username: "萌宠日记",
+                avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-white-kitten-1192-large.mp4",
+                description: "我家猫咪的日常，太可爱了！",
+                music: "可爱宠物配乐 - 萌萌哒",
+                likes: 1567,
+                comments: 89,
+                shares: 23,
+                userId: 4,
+                likedBy: []
+            },
+            {
+                id: 5,
+                username: "手工达人",
+                avatar: "https://randomuser.me/api/portraits/women/33.jpg",
+                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-potter-making-a-clay-pot-31545-large.mp4",
+                description: "亲手制作的陶瓷杯，每一件都是独一无二的艺术品",
+                music: "舒缓手工BGM - 创造时光",
+                likes: 723,
+                comments: 45,
+                shares: 9,
+                userId: 5,
                 likedBy: []
             }
         ];
@@ -736,11 +828,25 @@
         const navItems = document.querySelectorAll('.nav-item');
         const registerEmail = document.getElementById('registerEmail');
         const emailHint = document.getElementById('emailHint');
+        const publishBtn = document.getElementById('publishBtn');
         
         // 邮箱验证函数
         function validateEmail(email) {
             const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(String(email).toLowerCase());
+        }
+        
+        // 显示错误消息
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+        
+        // 隐藏错误消息
+        function hideError(elementId) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.style.display = 'none';
         }
         
         // 邮箱输入验证
@@ -805,6 +911,9 @@
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
             
+            // 清除之前的错误信息
+            hideError('loginError');
+            
             // 验证用户 - 支持邮箱或用户名登录
             const user = users.find(u => 
                 (u.username === username || u.email === username) && 
@@ -824,7 +933,7 @@
                 authModal.style.display = 'none';
                 
                 // 显示成功消息
-                alert('登录成功！');
+                showNotification('登录成功！');
                 
                 // 更新个人主页信息
                 updateProfileInfo();
@@ -832,7 +941,7 @@
                 // 重新初始化视频流，更新点赞状态
                 initVideoFeed();
             } else {
-                alert('用户名/邮箱或密码错误！');
+                showError('loginError', '用户名/邮箱或密码错误！');
             }
         });
         
@@ -845,27 +954,44 @@
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('registerConfirmPassword').value;
             
+            // 清除之前的错误信息
+            hideError('usernameError');
+            hideError('passwordError');
+            hideError('confirmPasswordError');
+            
             // 验证邮箱格式
             if (!validateEmail(email)) {
                 emailHint.style.display = 'block';
                 registerEmail.style.borderColor = '#ff6600';
-                alert('请输入有效的邮箱地址！');
+                showNotification('请输入有效的邮箱地址！');
+                return;
+            }
+            
+            // 验证用户名长度
+            if (username.length < 3) {
+                showError('usernameError', '用户名至少需要3个字符！');
+                return;
+            }
+            
+            // 验证密码长度
+            if (password.length < 6) {
+                showError('passwordError', '密码至少需要6个字符！');
                 return;
             }
             
             // 验证输入
             if (password !== confirmPassword) {
-                alert('两次输入的密码不一致！');
+                showError('confirmPasswordError', '两次输入的密码不一致！');
                 return;
             }
             
             if (users.find(u => u.username === username)) {
-                alert('用户名已存在！');
+                showError('usernameError', '用户名已存在！');
                 return;
             }
             
             if (users.find(u => u.email === email)) {
-                alert('该邮箱已被注册！');
+                showError('emailError', '该邮箱已被注册！');
                 return;
             }
             
@@ -877,8 +1003,8 @@
                 password,
                 avatar: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 50) + 1}.jpg`,
                 followCount: Math.floor(Math.random() * 200),
-                fansCount: Math.floor(Math.random() * 10000),
-                likeCount: Math.floor(Math.random() * 50000),
+                fansCount: Math.floor(Math.random() * 1000),
+                likeCount: Math.floor(Math.random() * 5000),
                 kuaishouId: 'ks' + Date.now().toString().slice(-8)
             };
             
@@ -898,7 +1024,7 @@
             authModal.style.display = 'none';
             
             // 显示成功消息
-            alert('注册成功！已自动登录。');
+            showNotification('注册成功！已自动登录。');
             
             // 更新个人主页信息
             updateProfileInfo();
@@ -906,6 +1032,32 @@
             // 重新初始化视频流，更新点赞状态
             initVideoFeed();
         });
+        
+        // 显示通知
+        function showNotification(message) {
+            // 创建通知元素
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 70px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: #ff6600;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 6px;
+                z-index: 1000;
+                font-size: 14px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // 3秒后移除通知
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
         
         // 检查是否已登录
         function checkLoginStatus() {
@@ -1235,6 +1387,15 @@
             }
         });
         
+        // 发布按钮点击事件
+        publishBtn.addEventListener('click', () => {
+            if (!currentUser) {
+                authModal.style.display = 'flex';
+                return;
+            }
+            showNotification('发布功能即将开放，敬请期待！');
+        });
+        
         // 初始化
         function init() {
             checkLoginStatus();
@@ -1251,7 +1412,7 @@
                 authModal.style.display = 'flex';
                 return;
             }
-            alert('评论功能即将开放，敬请期待！');
+            showNotification('评论功能即将开放，敬请期待！');
         }
     </script>
 </body>
