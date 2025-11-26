@@ -216,6 +216,7 @@
             border-radius: 50%;
             cursor: pointer;
             margin-left: 15px;
+            background-color: #fff;
         }
         
         /* 底部导航栏 */
@@ -361,6 +362,7 @@
             border-radius: 50%;
             border: 2px solid #fff;
             margin-bottom: 4px;
+            background-color: #fff;
         }
         
         /* 点赞动画 */
@@ -408,6 +410,7 @@
             margin-right: 15px;
             position: relative;
             cursor: pointer;
+            background-color: #fff;
         }
         
         .avatar-edit {
@@ -448,6 +451,7 @@
         .stat-item {
             margin-right: 20px;
             text-align: center;
+            cursor: pointer;
         }
         
         .stat-count {
@@ -518,6 +522,7 @@
             border-radius: 4px;
             overflow: hidden;
             position: relative;
+            cursor: pointer;
         }
         
         .profile-video img {
@@ -669,6 +674,7 @@
             height: 36px;
             border-radius: 50%;
             margin-right: 10px;
+            background-color: #fff;
         }
         
         .comment-content {
@@ -937,6 +943,302 @@
             font-size: 12px;
             margin-top: 5px;
         }
+        
+        /* 搜索模态框 */
+        .search-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            display: none;
+        }
+        
+        .search-container {
+            background-color: #1a1a1a;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .search-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .search-input-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px 0 0 6px;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #ff3366;
+        }
+        
+        .search-btn {
+            padding: 12px 20px;
+            background-color: #ff3366;
+            color: #fff;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .search-results {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+        }
+        
+        .search-result-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background-color: #fff;
+        }
+        
+        .search-result-info {
+            flex: 1;
+        }
+        
+        .search-result-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .search-result-id {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        /* 消息页面 */
+        .message-page {
+            display: none;
+            margin-top: 50px;
+            margin-bottom: 55px;
+            padding: 15px;
+            overflow-y: auto;
+            height: calc(100vh - 105px);
+        }
+        
+        .message-list {
+            margin-bottom: 15px;
+        }
+        
+        .message-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+        }
+        
+        .message-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 12px;
+            background-color: #fff;
+        }
+        
+        .message-content {
+            flex: 1;
+        }
+        
+        .message-user {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .message-text {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .message-time {
+            font-size: 10px;
+            color: #666;
+        }
+        
+        /* 关注/粉丝列表模态框 */
+        .follow-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            display: none;
+        }
+        
+        .follow-container {
+            background-color: #1a1a1a;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .follow-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        
+        .follow-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .follow-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .follow-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .follow-tab.active {
+            color: #ff3366;
+            border-bottom: 2px solid #ff3366;
+        }
+        
+        .follow-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .follow-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .follow-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background-color: #fff;
+        }
+        
+        .follow-info {
+            flex: 1;
+        }
+        
+        .follow-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .follow-id {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .follow-action {
+            padding: 6px 12px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .follow-action.following {
+            background-color: #ff3366;
+        }
+        
+        /* 退出登录模态框 */
+        .logout-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            display: none;
+        }
+        
+        .logout-container {
+            background-color: #1a1a1a;
+            width: 90%;
+            max-width: 300px;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        
+        .logout-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .logout-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .logout-btn {
+            flex: 1;
+            margin: 0 5px;
+        }
+        
+        .logout-btn.cancel {
+            background-color: #333;
+        }
     </style>
 </head>
 <body>
@@ -951,7 +1253,7 @@
             
             <form class="modal-form active" id="loginForm">
                 <div class="form-group">
-                    <input type="text" class="form-input" placeholder="邮箱/用户名" id="loginUsername" required>
+                    <input type="text" class="form-input" placeholder="KC号/用户名" id="loginUsername" required>
                     <div class="error-message" id="loginError"></div>
                 </div>
                 <div class="form-group">
@@ -992,6 +1294,49 @@
                     已有账号？<span class="modal-link" id="toLogin">立即登录</span>
                 </div>
             </form>
+        </div>
+    </div>
+    
+    <!-- 搜索模态框 -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-container">
+            <div class="close-modal" id="closeSearch">&times;</div>
+            <div class="search-title">搜索用户</div>
+            <div class="search-input-group">
+                <input type="text" class="search-input" placeholder="搜索用户KC号或用户名" id="searchInput">
+                <button class="search-btn" id="searchButton">搜索</button>
+            </div>
+            <div class="search-results" id="searchResults">
+                <!-- 搜索结果将通过JavaScript动态添加 -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- 关注/粉丝列表模态框 -->
+    <div class="follow-modal" id="followModal">
+        <div class="follow-container">
+            <div class="follow-header">
+                <div class="follow-title" id="followModalTitle">关注列表</div>
+                <div class="close-modal" id="closeFollow">&times;</div>
+            </div>
+            <div class="follow-tabs">
+                <div class="follow-tab active" data-type="following">关注</div>
+                <div class="follow-tab" data-type="followers">粉丝</div>
+            </div>
+            <div class="follow-list" id="followList">
+                <!-- 关注/粉丝列表将通过JavaScript动态添加 -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- 退出登录模态框 -->
+    <div class="logout-modal" id="logoutModal">
+        <div class="logout-container">
+            <div class="logout-title">确定要退出登录吗？</div>
+            <div class="logout-actions">
+                <button class="btn logout-btn cancel" id="cancelLogout">取消</button>
+                <button class="btn logout-btn" id="confirmLogout">退出</button>
+            </div>
         </div>
     </div>
     
@@ -1114,14 +1459,14 @@
     <div class="header">
         <div class="logo">KC</div>
         <div class="header-actions">
-            <div class="search-icon">
+            <div class="search-icon" id="openSearch">
                 <i class="fas fa-search"></i>
             </div>
             <div class="camera-icon" id="openPublish">
                 <i class="fas fa-camera"></i>
             </div>
             <button class="login-btn" id="showAuth">登录</button>
-            <img src="https://randomuser.me/api/portraits/men/1.jpg" class="user-avatar" id="userAvatar" style="display: none;">
+            <div class="user-avatar" id="userAvatar" style="display: none;"></div>
         </div>
     </div>
     
@@ -1134,7 +1479,7 @@
     <div class="profile-page" id="profilePage">
         <div class="profile-header">
             <div class="profile-avatar" id="profileAvatarContainer">
-                <img src="https://randomuser.me/api/portraits/men/1.jpg" class="profile-avatar" id="profileAvatar">
+                <div class="profile-avatar" id="profileAvatar"></div>
                 <div class="avatar-edit" id="editAvatar">
                     <i class="fas fa-camera"></i>
                 </div>
@@ -1143,34 +1488,40 @@
                 <div class="profile-name" id="profileName">用户名</div>
                 <div class="profile-id" id="profileId">KC号: 123456789</div>
                 <div class="profile-stats">
-                    <div class="stat-item">
-                        <div class="stat-count" id="followCount">120</div>
+                    <div class="stat-item" id="followCountItem">
+                        <div class="stat-count" id="followCount">0</div>
                         <div class="stat-label">关注</div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-count" id="fansCount">1.2万</div>
+                    <div class="stat-item" id="fansCountItem">
+                        <div class="stat-count" id="fansCount">0</div>
                         <div class="stat-label">粉丝</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-count" id="likeCount">5.6万</div>
+                        <div class="stat-count" id="likeCount">0</div>
                         <div class="stat-label">获赞</div>
                     </div>
                 </div>
                 <div class="profile-actions">
-                    <div class="profile-btn primary">编辑资料</div>
-                    <div class="profile-btn">分享</div>
+                    <div class="profile-btn primary" id="editProfile">编辑资料</div>
+                    <div class="profile-btn" id="logoutBtn">退出登录</div>
                 </div>
             </div>
         </div>
         
         <div class="profile-tabs">
             <div class="profile-tab active">作品</div>
-            <div class="profile-tab">动态</div>
             <div class="profile-tab">喜欢</div>
         </div>
         
         <div class="profile-content" id="profileContent">
             <!-- 用户作品将通过JavaScript动态添加 -->
+        </div>
+    </div>
+    
+    <!-- 消息页面 -->
+    <div class="message-page" id="messagePage">
+        <div class="message-list" id="messageList">
+            <!-- 消息将通过JavaScript动态添加 -->
         </div>
     </div>
     
@@ -1194,7 +1545,7 @@
             </div>
             <div>发布</div>
         </div>
-        <div class="nav-item" data-page="message">
+        <div class="nav-item" data-page="message" id="messageNav">
             <div class="nav-icon">
                 <i class="fas fa-comment"></i>
             </div>
@@ -1214,16 +1565,36 @@
     </div>
     
     <script>
-        // 模拟用户数据
+        // 初始化数据
         let currentUser = null;
-        const users = JSON.parse(localStorage.getItem('kc_users')) || [];
+        let users = JSON.parse(localStorage.getItem('kc_users')) || [];
+        let videoData = JSON.parse(localStorage.getItem('kc_videos')) || [];
+        let messages = JSON.parse(localStorage.getItem('kc_messages')) || [];
+        let kcIdCounter = parseInt(localStorage.getItem('kc_id_counter')) || 100000;
         
-        // 模拟视频数据 - 使用更真实的视频URL
-        let videoData = JSON.parse(localStorage.getItem('kc_videos')) || [
-            {
+        // 初始化示例数据
+        if (users.length === 0) {
+            // 添加示例用户
+            const exampleUser = {
                 id: 1,
                 username: "旅行达人",
-                avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+                email: "travel@example.com",
+                password: "123456",
+                avatar: "",
+                followCount: 0,
+                fansCount: 0,
+                likeCount: 0,
+                kcId: "100001",
+                following: [],
+                followers: []
+            };
+            users.push(exampleUser);
+            
+            // 添加示例视频
+            const exampleVideo = {
+                id: 1,
+                username: "旅行达人",
+                avatar: "",
                 videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
                 description: "美丽的海边日落，太治愈了！🌅",
                 music: "治愈系纯音乐 - 海边日落",
@@ -1233,41 +1604,17 @@
                 userId: 1,
                 likedBy: [],
                 commentsList: [
-                    { id: 1, username: "用户A", avatar: "https://randomuser.me/api/portraits/women/12.jpg", text: "太美了！", likes: 5 },
-                    { id: 2, username: "用户B", avatar: "https://randomuser.me/api/portraits/men/24.jpg", text: "我也想去这里！", likes: 3 }
+                    { id: 1, username: "用户A", avatar: "", text: "太美了！", likes: 5 },
+                    { id: 2, username: "用户B", avatar: "", text: "我也想去这里！", likes: 3 }
                 ]
-            },
-            {
-                id: 2,
-                username: "美食探店",
-                avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-cooking-ingredients-in-a-pan-31506-large.mp4",
-                description: "这家餐厅的招牌菜真的绝了！强烈推荐！",
-                music: "轻快美食BGM - 美味时刻",
-                likes: 567,
-                comments: 23,
-                shares: 5,
-                userId: 2,
-                likedBy: [],
-                commentsList: [
-                    { id: 1, username: "用户C", avatar: "https://randomuser.me/api/portraits/women/33.jpg", text: "看起来好好吃！", likes: 2 }
-                ]
-            },
-            {
-                id: 3,
-                username: "健身教练",
-                avatar: "https://randomuser.me/api/portraits/men/22.jpg",
-                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-girl-in-yoga-position-1171-large.mp4",
-                description: "每天坚持10分钟，轻松拥有好身材！",
-                music: "动感健身音乐 - 活力四射",
-                likes: 890,
-                comments: 34,
-                shares: 8,
-                userId: 3,
-                likedBy: [],
-                commentsList: []
-            }
-        ];
+            };
+            videoData.push(exampleVideo);
+            
+            // 保存数据
+            localStorage.setItem('kc_users', JSON.stringify(users));
+            localStorage.setItem('kc_videos', JSON.stringify(videoData));
+            localStorage.setItem('kc_id_counter', kcIdCounter.toString());
+        }
         
         // DOM元素
         const authModal = document.getElementById('authModal');
@@ -1319,6 +1666,27 @@
         const sendCaptcha = document.getElementById('sendCaptcha');
         const registerCaptcha = document.getElementById('registerCaptcha');
         const captchaCountdown = document.getElementById('captchaCountdown');
+        const searchModal = document.getElementById('searchModal');
+        const openSearch = document.getElementById('openSearch');
+        const closeSearch = document.getElementById('closeSearch');
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const searchResults = document.getElementById('searchResults');
+        const followModal = document.getElementById('followModal');
+        const closeFollow = document.getElementById('closeFollow');
+        const followModalTitle = document.getElementById('followModalTitle');
+        const followTabs = document.querySelectorAll('.follow-tab');
+        const followList = document.getElementById('followList');
+        const followCountItem = document.getElementById('followCountItem');
+        const fansCountItem = document.getElementById('fansCountItem');
+        const messagePage = document.getElementById('messagePage');
+        const messageList = document.getElementById('messageList');
+        const messageNav = document.getElementById('messageNav');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const logoutModal = document.getElementById('logoutModal');
+        const cancelLogout = document.getElementById('cancelLogout');
+        const confirmLogout = document.getElementById('confirmLogout');
+        const editProfile = document.getElementById('editProfile');
         
         // 当前正在操作的对象
         let currentVideoId = null;
@@ -1327,8 +1695,9 @@
         let captchaCode = null;
         let captchaTimer = null;
         let countdownSeconds = 60;
+        let currentFollowType = 'following';
         
-        // 邮箱验证函数 - 更严格的验证
+        // 邮箱验证函数
         function validateEmail(email) {
             const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(String(email).toLowerCase());
@@ -1347,6 +1716,13 @@
             errorElement.style.display = 'none';
         }
         
+        // 生成唯一的KC号
+        function generateKcId() {
+            kcIdCounter++;
+            localStorage.setItem('kc_id_counter', kcIdCounter.toString());
+            return kcIdCounter.toString();
+        }
+        
         // 发送验证码
         sendCaptcha.addEventListener('click', () => {
             const email = registerEmail.value;
@@ -1360,6 +1736,12 @@
                 emailHint.style.display = 'block';
                 registerEmail.style.borderColor = '#ff3366';
                 showNotification('请输入有效的邮箱地址！');
+                return;
+            }
+            
+            // 检查邮箱是否已被注册
+            if (users.find(u => u.email === email)) {
+                showNotification('该邮箱已被注册！');
                 return;
             }
             
@@ -1460,9 +1842,9 @@
             // 清除之前的错误信息
             hideError('loginError');
             
-            // 验证用户 - 支持邮箱或用户名登录
+            // 验证用户 - 支持KC号或用户名登录
             const user = users.find(u => 
-                (u.username === username || u.email === username) && 
+                (u.username === username || u.kcId === username) && 
                 u.password === password
             );
             
@@ -1472,7 +1854,10 @@
                 
                 // 更新UI
                 showAuth.style.display = 'none';
-                userAvatar.src = user.avatar;
+                if (user.avatar) {
+                    userAvatar.style.backgroundImage = `url(${user.avatar})`;
+                    userAvatar.style.backgroundSize = 'cover';
+                }
                 userAvatar.style.display = 'block';
                 
                 // 关闭模态框
@@ -1487,7 +1872,7 @@
                 // 重新初始化视频流，更新点赞状态
                 initVideoFeed();
             } else {
-                showError('loginError', '用户名/邮箱或密码错误！');
+                showError('loginError', 'KC号/用户名或密码错误！');
             }
         });
         
@@ -1553,17 +1938,22 @@
                 return;
             }
             
+            // 生成唯一的KC号
+            const kcId = generateKcId();
+            
             // 创建新用户
             const newUser = {
                 id: Date.now(),
                 username,
                 email,
                 password,
-                avatar: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 50) + 1}.jpg`,
-                followCount: Math.floor(Math.random() * 200),
-                fansCount: Math.floor(Math.random() * 1000),
-                likeCount: Math.floor(Math.random() * 5000),
-                kcId: 'kc' + Date.now().toString().slice(-8)
+                avatar: "",
+                followCount: 0,
+                fansCount: 0,
+                likeCount: 0,
+                kcId,
+                following: [],
+                followers: []
             };
             
             users.push(newUser);
@@ -1575,7 +1965,8 @@
             
             // 更新UI
             showAuth.style.display = 'none';
-            userAvatar.src = newUser.avatar;
+            userAvatar.style.backgroundImage = '';
+            userAvatar.style.backgroundColor = '#fff';
             userAvatar.style.display = 'block';
             
             // 关闭模态框
@@ -1612,7 +2003,12 @@
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
                 showAuth.style.display = 'none';
-                userAvatar.src = currentUser.avatar;
+                if (currentUser.avatar) {
+                    userAvatar.style.backgroundImage = `url(${currentUser.avatar})`;
+                    userAvatar.style.backgroundSize = 'cover';
+                } else {
+                    userAvatar.style.backgroundColor = '#fff';
+                }
                 userAvatar.style.display = 'block';
                 
                 // 更新个人主页信息
@@ -1625,12 +2021,15 @@
             if (currentUser) {
                 profileName.textContent = currentUser.username;
                 profileId.textContent = `KC号: ${currentUser.kcId}`;
-                profileAvatar.src = currentUser.avatar;
+                if (currentUser.avatar) {
+                    profileAvatar.style.backgroundImage = `url(${currentUser.avatar})`;
+                    profileAvatar.style.backgroundSize = 'cover';
+                } else {
+                    profileAvatar.style.backgroundColor = '#fff';
+                }
                 followCount.textContent = currentUser.followCount;
-                fansCount.textContent = currentUser.fansCount > 1000 ? 
-                    (currentUser.fansCount / 1000).toFixed(1) + '万' : currentUser.fansCount;
-                likeCount.textContent = currentUser.likeCount > 10000 ? 
-                    (currentUser.likeCount / 10000).toFixed(1) + '万' : currentUser.likeCount;
+                fansCount.textContent = currentUser.fansCount;
+                likeCount.textContent = currentUser.likeCount;
             }
         }
         
@@ -1672,6 +2071,23 @@
                 
                 // 创建点赞动画
                 createLikeAnimation(videoId);
+                
+                // 发送点赞消息
+                if (videoOwner && videoOwner.id !== currentUser.id) {
+                    const message = {
+                        id: Date.now(),
+                        type: 'like',
+                        fromUser: currentUser.id,
+                        fromUsername: currentUser.username,
+                        toUser: videoOwner.id,
+                        videoId: videoId,
+                        text: `点赞了你的视频`,
+                        time: new Date().toISOString(),
+                        read: false
+                    };
+                    messages.push(message);
+                    localStorage.setItem('kc_messages', JSON.stringify(messages));
+                }
             }
             
             // 保存更新后的视频数据
@@ -1777,6 +2193,10 @@
                 const likeIconClass = isLiked ? 'action-icon liked' : 'action-icon';
                 const likeIconColor = isLiked ? '#ff3366' : '#fff';
                 
+                // 获取用户信息
+                const videoUser = users.find(u => u.id === video.userId);
+                const userAvatar = videoUser && videoUser.avatar ? videoUser.avatar : '';
+                
                 videoItem.innerHTML = `
                     <div class="sound-control" onclick="toggleMute(this)">
                         <i class="fas fa-volume-mute sound-icon"></i>
@@ -1795,7 +2215,7 @@
                     </div>
                     <div class="action-bar">
                         <div class="action-item">
-                            <img class="avatar" src="${video.avatar}" alt="${video.username}">
+                            <div class="avatar" style="${userAvatar ? `background-image: url(${userAvatar}); background-size: cover;` : 'background-color: #fff;'}"></div>
                             <div class="action-icon">
                                 <i class="fas fa-plus"></i>
                             </div>
@@ -1879,7 +2299,7 @@
                     const videoElement = document.createElement('div');
                     videoElement.className = 'profile-video';
                     videoElement.innerHTML = `
-                        <video class="video-player" loop muted>
+                        <video class="video-player" loop muted onclick="playProfileVideo(this)">
                             <source src="${video.videoUrl}" type="video/mp4">
                         </video>
                         <div class="video-overlay">
@@ -1905,6 +2325,15 @@
             }
         }
         
+        // 播放个人主页视频
+        function playProfileVideo(videoElement) {
+            if (videoElement.paused) {
+                videoElement.play();
+            } else {
+                videoElement.pause();
+            }
+        }
+        
         // 导航切换
         navItems.forEach(item => {
             item.addEventListener('click', () => {
@@ -1916,6 +2345,7 @@
                 // 隐藏所有页面
                 videoContainer.style.display = 'none';
                 profilePage.style.display = 'none';
+                messagePage.style.display = 'none';
                 
                 if (page === 'profile') {
                     if (!currentUser) {
@@ -1937,6 +2367,16 @@
                         return;
                     }
                     openPublishModal();
+                } else if (page === 'message') {
+                    if (!currentUser) {
+                        authModal.style.display = 'flex';
+                        // 重置导航状态
+                        navItems[0].classList.add('active');
+                        item.classList.remove('active');
+                        return;
+                    }
+                    messagePage.style.display = 'block';
+                    initMessagePage();
                 } else {
                     videoContainer.style.display = 'block';
                 }
@@ -1948,6 +2388,7 @@
             if (currentUser) {
                 videoContainer.style.display = 'none';
                 profilePage.style.display = 'block';
+                messagePage.style.display = 'none';
                 
                 navItems.forEach(nav => nav.classList.remove('active'));
                 profileNav.classList.add('active');
@@ -2043,6 +2484,7 @@
             navItems[0].classList.add('active');
             videoContainer.style.display = 'block';
             profilePage.style.display = 'none';
+            messagePage.style.display = 'none';
         });
         
         // 打开评论模态框
@@ -2061,8 +2503,11 @@
             video.commentsList.forEach(comment => {
                 const commentElement = document.createElement('div');
                 commentElement.className = 'comment-item';
+                const commentUser = users.find(u => u.username === comment.username);
+                const userAvatar = commentUser && commentUser.avatar ? commentUser.avatar : '';
+                
                 commentElement.innerHTML = `
-                    <img src="${comment.avatar}" class="comment-avatar">
+                    <div class="comment-avatar" style="${userAvatar ? `background-image: url(${userAvatar}); background-size: cover;` : 'background-color: #fff;'}"></div>
                     <div class="comment-content">
                         <div class="comment-user">${comment.username}</div>
                         <div class="comment-text">${comment.text}</div>
@@ -2110,8 +2555,10 @@
             // 更新评论列表
             const commentElement = document.createElement('div');
             commentElement.className = 'comment-item';
+            const userAvatar = currentUser.avatar ? currentUser.avatar : '';
+            
             commentElement.innerHTML = `
-                <img src="${newComment.avatar}" class="comment-avatar">
+                <div class="comment-avatar" style="${userAvatar ? `background-image: url(${userAvatar}); background-size: cover;` : 'background-color: #fff;'}"></div>
                 <div class="comment-content">
                     <div class="comment-user">${newComment.username}</div>
                     <div class="comment-text">${newComment.text}</div>
@@ -2128,6 +2575,24 @@
             
             // 更新UI
             updateCommentUI(currentVideoId);
+            
+            // 发送评论消息
+            const videoOwner = users.find(u => u.id === video.userId);
+            if (videoOwner && videoOwner.id !== currentUser.id) {
+                const message = {
+                    id: Date.now(),
+                    type: 'comment',
+                    fromUser: currentUser.id,
+                    fromUsername: currentUser.username,
+                    toUser: videoOwner.id,
+                    videoId: currentVideoId,
+                    text: `评论了你的视频: ${text}`,
+                    time: new Date().toISOString(),
+                    read: false
+                };
+                messages.push(message);
+                localStorage.setItem('kc_messages', JSON.stringify(messages));
+            }
         });
         
         // 更新评论UI
@@ -2171,7 +2636,11 @@
             }
             
             avatarModal.style.display = 'flex';
-            avatarPreview.innerHTML = `<img src="${currentUser.avatar}">`;
+            if (currentUser.avatar) {
+                avatarPreview.innerHTML = `<img src="${currentUser.avatar}">`;
+            } else {
+                avatarPreview.innerHTML = '<i class="fas fa-user" style="font-size: 60px; color: #666;"></i>';
+            }
             newAvatar = null;
         });
         
@@ -2215,14 +2684,288 @@
             }
             
             // 更新UI
-            userAvatar.src = imageURL;
-            profileAvatar.src = imageURL;
+            userAvatar.style.backgroundImage = `url(${imageURL})`;
+            userAvatar.style.backgroundSize = 'cover';
+            profileAvatar.style.backgroundImage = `url(${imageURL})`;
+            profileAvatar.style.backgroundSize = 'cover';
             
             // 关闭模态框
             avatarModal.style.display = 'none';
             
             // 显示成功消息
             showNotification('头像更新成功！');
+        });
+        
+        // 打开搜索模态框
+        openSearch.addEventListener('click', () => {
+            searchModal.style.display = 'flex';
+            searchInput.value = '';
+            searchResults.innerHTML = '';
+        });
+        
+        // 关闭搜索模态框
+        closeSearch.addEventListener('click', () => {
+            searchModal.style.display = 'none';
+        });
+        
+        // 搜索功能
+        searchButton.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if (!query) return;
+            
+            // 搜索用户
+            const results = users.filter(user => 
+                user.username.includes(query) || user.kcId.includes(query)
+            );
+            
+            // 显示搜索结果
+            searchResults.innerHTML = '';
+            if (results.length > 0) {
+                results.forEach(user => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    const userAvatar = user.avatar ? user.avatar : '';
+                    
+                    resultItem.innerHTML = `
+                        <div class="search-result-avatar" style="${userAvatar ? `background-image: url(${userAvatar}); background-size: cover;` : 'background-color: #fff;'}"></div>
+                        <div class="search-result-info">
+                            <div class="search-result-name">${user.username}</div>
+                            <div class="search-result-id">KC号: ${user.kcId}</div>
+                        </div>
+                    `;
+                    resultItem.addEventListener('click', () => {
+                        // 这里可以跳转到用户主页
+                        showNotification(`查看用户 ${user.username} 的主页`);
+                        searchModal.style.display = 'none';
+                    });
+                    searchResults.appendChild(resultItem);
+                });
+            } else {
+                searchResults.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">未找到相关用户</div>';
+            }
+        });
+        
+        // 关注/粉丝列表
+        followCountItem.addEventListener('click', () => {
+            if (!currentUser) return;
+            openFollowModal('following');
+        });
+        
+        fansCountItem.addEventListener('click', () => {
+            if (!currentUser) return;
+            openFollowModal('followers');
+        });
+        
+        function openFollowModal(type) {
+            currentFollowType = type;
+            followModal.style.display = 'flex';
+            followModalTitle.textContent = type === 'following' ? '关注列表' : '粉丝列表';
+            
+            // 更新标签页状态
+            followTabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('data-type') === type) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // 加载列表
+            loadFollowList(type);
+        }
+        
+        // 关闭关注/粉丝列表模态框
+        closeFollow.addEventListener('click', () => {
+            followModal.style.display = 'none';
+        });
+        
+        // 切换关注/粉丝标签页
+        followTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const type = tab.getAttribute('data-type');
+                currentFollowType = type;
+                followModalTitle.textContent = type === 'following' ? '关注列表' : '粉丝列表';
+                
+                // 更新标签页状态
+                followTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // 加载列表
+                loadFollowList(type);
+            });
+        });
+        
+        // 加载关注/粉丝列表
+        function loadFollowList(type) {
+            followList.innerHTML = '';
+            
+            let list = [];
+            if (type === 'following') {
+                list = currentUser.following.map(id => users.find(u => u.id === id)).filter(u => u);
+            } else {
+                list = currentUser.followers.map(id => users.find(u => u.id === id)).filter(u => u);
+            }
+            
+            if (list.length > 0) {
+                list.forEach(user => {
+                    const followItem = document.createElement('div');
+                    followItem.className = 'follow-item';
+                    const userAvatar = user.avatar ? user.avatar : '';
+                    const isFollowing = currentUser.following.includes(user.id);
+                    
+                    followItem.innerHTML = `
+                        <div class="follow-avatar" style="${userAvatar ? `background-image: url(${userAvatar}); background-size: cover;` : 'background-color: #fff;'}"></div>
+                        <div class="follow-info">
+                            <div class="follow-name">${user.username}</div>
+                            <div class="follow-id">KC号: ${user.kcId}</div>
+                        </div>
+                        <button class="follow-action ${isFollowing ? 'following' : ''}" onclick="toggleFollow(${user.id})">
+                            ${isFollowing ? '已关注' : '关注'}
+                        </button>
+                    `;
+                    followList.appendChild(followItem);
+                });
+            } else {
+                followList.innerHTML = `<div style="text-align: center; color: #999; padding: 20px;">${type === 'following' ? '暂无关注' : '暂无粉丝'}</div>`;
+            }
+        }
+        
+        // 关注/取消关注
+        function toggleFollow(userId) {
+            if (!currentUser) return;
+            
+            const userIndex = users.findIndex(u => u.id === userId);
+            if (userIndex === -1) return;
+            
+            const isFollowing = currentUser.following.includes(userId);
+            
+            if (isFollowing) {
+                // 取消关注
+                currentUser.following = currentUser.following.filter(id => id !== userId);
+                currentUser.followCount--;
+                
+                // 更新被关注用户的粉丝数
+                users[userIndex].followers = users[userIndex].followers.filter(id => id !== currentUser.id);
+                users[userIndex].fansCount--;
+            } else {
+                // 关注
+                currentUser.following.push(userId);
+                currentUser.followCount++;
+                
+                // 更新被关注用户的粉丝数
+                users[userIndex].followers.push(currentUser.id);
+                users[userIndex].fansCount++;
+                
+                // 发送关注消息
+                const message = {
+                    id: Date.now(),
+                    type: 'follow',
+                    fromUser: currentUser.id,
+                    fromUsername: currentUser.username,
+                    toUser: userId,
+                    text: `关注了你`,
+                    time: new Date().toISOString(),
+                    read: false
+                };
+                messages.push(message);
+                localStorage.setItem('kc_messages', JSON.stringify(messages));
+            }
+            
+            // 保存数据
+            localStorage.setItem('kc_users', JSON.stringify(users));
+            localStorage.setItem('kc_current_user', JSON.stringify(currentUser));
+            
+            // 更新UI
+            updateProfileInfo();
+            
+            // 重新加载列表
+            loadFollowList(currentFollowType);
+            
+            // 显示通知
+            showNotification(isFollowing ? '已取消关注' : '关注成功');
+        }
+        
+        // 初始化消息页面
+        function initMessagePage() {
+            messageList.innerHTML = '';
+            
+            // 获取当前用户的消息
+            const userMessages = messages.filter(m => m.toUser === currentUser.id);
+            
+            if (userMessages.length > 0) {
+                userMessages.forEach(message => {
+                    const messageItem = document.createElement('div');
+                    messageItem.className = 'message-item';
+                    const fromUser = users.find(u => u.id === message.fromUser);
+                    const userAvatar = fromUser && fromUser.avatar ? fromUser.avatar : '';
+                    
+                    messageItem.innerHTML = `
+                        <div class="message-avatar" style="${userAvatar ? `background-image: url(${userAvatar}); background-size: cover;` : 'background-color: #fff;'}"></div>
+                        <div class="message-content">
+                            <div class="message-user">${fromUser ? fromUser.username : '未知用户'}</div>
+                            <div class="message-text">${message.text}</div>
+                        </div>
+                        <div class="message-time">${formatTime(message.time)}</div>
+                    `;
+                    messageList.appendChild(messageItem);
+                });
+            } else {
+                messageList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">暂无消息</div>';
+            }
+        }
+        
+        // 格式化时间
+        function formatTime(timeString) {
+            const time = new Date(timeString);
+            const now = new Date();
+            const diff = now - time;
+            
+            if (diff < 60000) { // 1分钟内
+                return '刚刚';
+            } else if (diff < 3600000) { // 1小时内
+                return Math.floor(diff / 60000) + '分钟前';
+            } else if (diff < 86400000) { // 1天内
+                return Math.floor(diff / 3600000) + '小时前';
+            } else {
+                return time.getMonth() + 1 + '月' + time.getDate() + '日';
+            }
+        }
+        
+        // 退出登录
+        logoutBtn.addEventListener('click', () => {
+            logoutModal.style.display = 'flex';
+        });
+        
+        // 取消退出登录
+        cancelLogout.addEventListener('click', () => {
+            logoutModal.style.display = 'none';
+        });
+        
+        // 确认退出登录
+        confirmLogout.addEventListener('click', () => {
+            currentUser = null;
+            localStorage.removeItem('kc_current_user');
+            
+            // 更新UI
+            showAuth.style.display = 'block';
+            userAvatar.style.display = 'none';
+            
+            // 关闭模态框
+            logoutModal.style.display = 'none';
+            
+            // 显示通知
+            showNotification('已退出登录');
+            
+            // 切换到首页
+            navItems.forEach(nav => nav.classList.remove('active'));
+            navItems[0].classList.add('active');
+            videoContainer.style.display = 'block';
+            profilePage.style.display = 'none';
+            messagePage.style.display = 'none';
+        });
+        
+        // 编辑资料
+        editProfile.addEventListener('click', () => {
+            showNotification('编辑资料功能开发中...');
         });
         
         // 初始化
