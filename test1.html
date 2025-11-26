@@ -91,6 +91,37 @@
             border-color: #ff3366;
         }
         
+        .captcha-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .captcha-input {
+            flex: 1;
+        }
+        
+        .captcha-btn {
+            width: 120px;
+            padding: 12px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .captcha-btn:hover {
+            background-color: #444;
+        }
+        
+        .captcha-btn:disabled {
+            background-color: #222;
+            color: #666;
+            cursor: not-allowed;
+        }
+        
         .btn {
             padding: 12px;
             background-color: #ff3366;
@@ -899,6 +930,13 @@
             font-size: 14px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
+        
+        /* 验证码倒计时 */
+        .countdown {
+            color: #ff3366;
+            font-size: 12px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -933,6 +971,13 @@
                 <div class="form-group">
                     <input type="email" class="form-input" placeholder="邮箱地址 (例如: example@gmail.com)" id="registerEmail" required>
                     <div class="email-hint" id="emailHint">请输入有效的邮箱地址</div>
+                </div>
+                <div class="form-group">
+                    <div class="captcha-group">
+                        <input type="text" class="form-input captcha-input" placeholder="验证码" id="registerCaptcha" required>
+                        <button type="button" class="captcha-btn" id="sendCaptcha">发送验证码</button>
+                    </div>
+                    <div class="countdown" id="captchaCountdown"></div>
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-input" placeholder="密码" id="registerPassword" required>
@@ -1271,13 +1316,19 @@
         const videoDesc = document.getElementById('videoDesc');
         const videoMusic = document.getElementById('videoMusic');
         const openPublish = document.getElementById('openPublish');
+        const sendCaptcha = document.getElementById('sendCaptcha');
+        const registerCaptcha = document.getElementById('registerCaptcha');
+        const captchaCountdown = document.getElementById('captchaCountdown');
         
         // 当前正在操作的对象
         let currentVideoId = null;
         let newAvatar = null;
         let newVideo = null;
+        let captchaCode = null;
+        let captchaTimer = null;
+        let countdownSeconds = 60;
         
-        // 邮箱验证函数
+        // 邮箱验证函数 - 更严格的验证
         function validateEmail(email) {
             const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(String(email).toLowerCase());
@@ -1294,6 +1345,48 @@
         function hideError(elementId) {
             const errorElement = document.getElementById(elementId);
             errorElement.style.display = 'none';
+        }
+        
+        // 发送验证码
+        sendCaptcha.addEventListener('click', () => {
+            const email = registerEmail.value;
+            
+            if (!email) {
+                showNotification('请输入邮箱地址！');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                emailHint.style.display = 'block';
+                registerEmail.style.borderColor = '#ff3366';
+                showNotification('请输入有效的邮箱地址！');
+                return;
+            }
+            
+            // 模拟发送验证码到邮箱
+            captchaCode = Math.floor(1000 + Math.random() * 9000).toString();
+            showNotification(`验证码已发送到 ${email}，验证码是：${captchaCode}（演示用）`);
+            
+            // 禁用按钮并开始倒计时
+            sendCaptcha.disabled = true;
+            startCountdown();
+        });
+        
+        // 开始倒计时
+        function startCountdown() {
+            countdownSeconds = 60;
+            captchaCountdown.textContent = `${countdownSeconds}秒后重新发送`;
+            
+            captchaTimer = setInterval(() => {
+                countdownSeconds--;
+                captchaCountdown.textContent = `${countdownSeconds}秒后重新发送`;
+                
+                if (countdownSeconds <= 0) {
+                    clearInterval(captchaTimer);
+                    sendCaptcha.disabled = false;
+                    captchaCountdown.textContent = '';
+                }
+            }, 1000);
         }
         
         // 邮箱输入验证
@@ -1314,6 +1407,12 @@
         
         closeAuth.addEventListener('click', () => {
             authModal.style.display = 'none';
+            // 重置验证码状态
+            if (captchaTimer) {
+                clearInterval(captchaTimer);
+                sendCaptcha.disabled = false;
+                captchaCountdown.textContent = '';
+            }
         });
         
         // 切换登录/注册选项卡
@@ -1400,6 +1499,7 @@
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const captcha = registerCaptcha.value;
             
             // 清除之前的错误信息
             hideError('usernameError');
@@ -1411,6 +1511,17 @@
                 emailHint.style.display = 'block';
                 registerEmail.style.borderColor = '#ff3366';
                 showNotification('请输入有效的邮箱地址！');
+                return;
+            }
+            
+            // 验证验证码
+            if (!captcha) {
+                showNotification('请输入验证码！');
+                return;
+            }
+            
+            if (captcha !== captchaCode) {
+                showNotification('验证码错误！');
                 return;
             }
             
@@ -1646,7 +1757,18 @@
         function initVideoFeed() {
             videoContainer.innerHTML = '';
             
-            videoData.forEach(video => {
+            // 确保当前用户的视频显示在首位
+            const sortedVideos = [...videoData];
+            if (currentUser) {
+                // 将当前用户的视频移到前面
+                sortedVideos.sort((a, b) => {
+                    if (a.userId === currentUser.id && b.userId !== currentUser.id) return -1;
+                    if (a.userId !== currentUser.id && b.userId === currentUser.id) return 1;
+                    return 0;
+                });
+            }
+            
+            sortedVideos.forEach(video => {
                 const videoItem = document.createElement('div');
                 videoItem.className = 'video-item';
                 videoItem.setAttribute('data-video-id', video.id);
@@ -1725,6 +1847,9 @@
             videos.forEach(video => {
                 observer.observe(video);
             });
+            
+            // 滚动到顶部，确保新发布的视频可见
+            videoContainer.scrollTop = 0;
         }
         
         // 切换静音/取消静音
