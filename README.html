@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D FPS射击训练</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(90deg, #ff8a00, #e52e71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            position: relative;
+        }
+        
+        .stats-panel {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid #444;
+        }
+        
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+        
+        .game-area {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            background: radial-gradient(circle at center, #2c3e50, #1c2833);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            border: 2px solid #444;
+            perspective: 1000px;
+        }
+        
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+        
+        .target {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #ff3333, #cc0000);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            transform-style: preserve-3d;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .target.hit {
+            background: radial-gradient(circle, #ffff00, #ffcc00);
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.9);
+            transform: scale(1.5);
+            opacity: 0.7;
+        }
+        
+        .gun {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 150px;
+            background: #333;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            transform-style: preserve-3d;
+        }
+        
+        .gun-barrel {
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 80px;
+            background: #555;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .gun-handle {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 60px;
+            background: #222;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        .crosshair::before,
+        .crosshair::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        .crosshair::before {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .crosshair::after {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .crosshair .dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 4px;
+            background: #ff3333;
+            border-radius: 50%;
+        }
+        
+        .bullet-hole {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .bullet-hole::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: #333;
+            border-radius: 50%;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            background: linear-gradient(135deg, #ff8a00, #e52e71);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        .instructions {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            margin-top: 20px;
+            line-height: 1.6;
+            border: 1px solid #444;
+        }
+        
+        .instructions h2 {
+            margin-bottom: 10px;
+            color: #ffcc00;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .muzzle-flash {
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 40px;
+            background: radial-gradient(ellipse, #ffff00, #ff8a00, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 11;
+        }
+        
+        /* 3D效果增强 */
+        .wall {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #2c3e50 25%, #34495e 25%, #34495e 50%, #2c3e50 50%, #2c3e50 75%, #34495e 75%);
+            background-size: 50px 50px;
+            transform: translateZ(-500px);
+            opacity: 0.3;
+        }
+        
+        .floor {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(0deg, #1a1a1a, #2a2a2a);
+            transform: rotateX(90deg) translateZ(-250px);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .game-area {
+                height: 400px;
+            }
+            
+            .stats-panel {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .gun {
+                width: 150px;
+                height: 120px;
+            }
+            
+            .gun-barrel {
+                height: 60px;
+                top: -60px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .game-area {
+                height: 300px;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            .target {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>3D FPS射击训练</h1>
+        <p>提升你的瞄准精度和反应速度</p>
+    </header>
+    
+    <div class="game-container">
+        <div class="stats-panel">
+            <div class="stat">
+                <div>得分</div>
+                <div class="stat-value" id="score">0</div>
+            </div>
+            <div class="stat">
+                <div>弹药</div>
+                <div class="stat-value" id="ammo">30</div>
+            </div>
+            <div class="stat">
+                <div>命中率</div>
+                <div class="stat-value" id="accuracy">0%</div>
+            </div>
+        </div>
+        
+        <div class="game-area" id="gameArea">
+            <div class="scene" id="scene">
+                <div class="wall"></div>
+                <div class="floor"></div>
+                <div class="crosshair">
+                    <div class="dot"></div>
+                </div>
+                <div class="gun">
+                    <div class="gun-barrel"></div>
+                    <div class="gun-handle"></div>
+                    <div class="muzzle-flash" id="muzzleFlash"></div>
+                </div>
+                <!-- 目标和弹孔将动态生成在这里 -->
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="startBtn">开始游戏</button>
+            <button id="reloadBtn">重新装弹</button>
+            <button id="resetBtn">重置游戏</button>
+        </div>
+    </div>
+    
+    <div class="instructions">
+        <h2>游戏说明</h2>
+        <ul>
+            <li>点击目标进行射击，击中目标获得10分</li>
+            <li>初始弹药30发，用完后需要重新装弹</li>
+            <li>尽可能提高命中率</li>
+            <li>电脑版：使用鼠标点击目标</li>
+            <li>手机版：使用手指触摸目标</li>
+            <li>目标会随机出现在3D空间中</li>
+        </ul>
+    </div>
+
+    <script>
+        // 游戏变量
+        let score = 0;
+        let ammo = 30;
+        let gameActive = false;
+        let hits = 0;
+        let totalShots = 0;
+        let targetInterval;
+        
+        // DOM元素
+        const gameArea = document.getElementById('gameArea');
+        const scene = document.getElementById('scene');
+        const scoreDisplay = document.getElementById('score');
+        const ammoDisplay = document.getElementById('ammo');
+        const accuracyDisplay = document.getElementById('accuracy');
+        const startBtn = document.getElementById('startBtn');
+        const reloadBtn = document.getElementById('reloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const muzzleFlash = document.getElementById('muzzleFlash');
+        
+        // 初始化游戏
+        function initGame() {
+            // 添加事件监听器
+            startBtn.addEventListener('click', startGame);
+            reloadBtn.addEventListener('click', reloadAmmo);
+            resetBtn.addEventListener('click', resetGame);
+            
+            // 添加射击事件
+            gameArea.addEventListener('click', handleShoot);
+            
+            // 添加触摸事件（移动设备）
+            gameArea.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                handleShoot(e);
+            });
+            
+            // 初始化显示
+            updateDisplay();
+        }
+        
+        // 开始游戏
+        function startGame() {
+            if (gameActive) return;
+            
+            gameActive = true;
+            score = 0;
+            ammo = 30;
+            hits = 0;
+            totalShots = 0;
+            
+            updateDisplay();
+            
+            // 清除现有目标
+            const targets = document.querySelectorAll('.target');
+            targets.forEach(target => target.remove());
+            
+            // 开始生成目标
+            generateTarget();
+            targetInterval = setInterval(generateTarget, 1500);
+        }
+        
+        // 生成目标
+        function generateTarget() {
+            if (!gameActive) return;
+            
+            // 创建目标元素
+            const target = document.createElement('div');
+            target.className = 'target';
+            
+            // 随机位置和深度
+            const x = Math.random() * 80 + 10; // 10% - 90%
+            const y = Math.random() * 50 + 10; // 10% - 60%
+            const z = Math.random() * 400 - 600; // -600px 到 -200px
+            
+            // 设置目标位置和3D变换
+            target.style.left = x + '%';
+            target.style.top = y + '%';
+            target.style.transform = `translateZ(${z}px)`;
+            
+            // 根据深度调整大小
+            const size = Math.max(20, 80 + z/10);
+            target.style.width = size + 'px';
+            target.style.height = size + 'px';
+            
+            // 添加到场景
+            scene.appendChild(target);
+            
+            // 设置目标消失时间
+            setTimeout(() => {
+                if (target.parentNode) {
+                    target.remove();
+                }
+            }, 3000);
+        }
+        
+        // 处理射击
+        function handleShoot(e) {
+            if (!gameActive || ammo <= 0) return;
+            
+            // 减少弹药
+            ammo--;
+            totalShots++;
+            
+            // 显示枪口火焰
+            showMuzzleFlash();
+            
+            // 创建弹孔
+            createBulletHole(e);
+            
+            // 检查是否击中目标
+            const targets = document.querySelectorAll('.target');
+            let hit = false;
+            
+            targets.forEach(target => {
+                const rect = target.getBoundingClientRect();
+                const gameRect = gameArea.getBoundingClientRect();
+                
+                // 计算点击位置相对于游戏区域的位置
+                let clickX, clickY;
+                
+                if (e.type === 'touchstart') {
+                    clickX = e.touches[0].clientX - gameRect.left;
+                    clickY = e.touches[0].clientY - gameRect.top;
+                } else {
+                    clickX = e.clientX - gameRect.left;
+                    clickY = e.clientY - gameRect.top;
+                }
+                
+                // 检查是否击中目标
+                if (clickX >= rect.left - gameRect.left && 
+                    clickX <= rect.right - gameRect.left &&
+                    clickY >= rect.top - gameRect.top &&
+                    clickY <= rect.bottom - gameRect.top) {
+                    
+                    hit = true;
+                    hits++;
+                    score += 10;
+                    
+                    // 目标被击中效果
+                    target.classList.add('hit');
+                    setTimeout(() => {
+                        if (target.parentNode) {
+                            target.remove();
+                        }
+                    }, 200);
+                }
+            });
+            
+            // 更新显示
+            updateDisplay();
+            
+            // 检查弹药是否用完
+            if (ammo <= 0) {
+                setTimeout(() => {
+                    alert(`弹药耗尽！\n最终得分: ${score}\n命中率: ${calculateAccuracy()}%`);
+                    gameActive = false;
+                    clearInterval(targetInterval);
+                }, 500);
+            }
+        }
+        
+        // 显示枪口火焰
+        function showMuzzleFlash() {
+            muzzleFlash.style.opacity = '1';
+            setTimeout(() => {
+                muzzleFlash.style.opacity = '0';
+            }, 100);
+        }
+        
+        // 创建弹孔
+        function createBulletHole(e) {
+            const bulletHole = document.createElement('div');
+            bulletHole.className = 'bullet-hole';
+            
+            const gameRect = gameArea.getBoundingClientRect();
+            let x, y;
+            
+            if (e.type === 'touchstart') {
+                x = e.touches[0].clientX - gameRect.left;
+                y = e.touches[0].clientY - gameRect.top;
+            } else {
+                x = e.clientX - gameRect.left;
+                y = e.clientY - gameRect.top;
+            }
+            
+            bulletHole.style.left = (x - 10) + 'px';
+            bulletHole.style.top = (y - 10) + 'px';
+            
+            scene.appendChild(bulletHole);
+            
+            // 5秒后移除弹孔
+            setTimeout(() => {
+                if (bulletHole.parentNode) {
+                    bulletHole.remove();
+                }
+            }, 5000);
+        }
+        
+        // 重新装弹
+        function reloadAmmo() {
+            if (!gameActive) return;
+            ammo = 30;
+            updateDisplay();
+        }
+        
+        // 重置游戏
+        function resetGame() {
+            gameActive = false;
+            clearInterval(targetInterval);
+            
+            score = 0;
+            ammo = 30;
+            hits = 0;
+            totalShots = 0;
+            
+            // 清除所有目标和弹孔
+            const targets = document.querySelectorAll('.target, .bullet-hole');
+            targets.forEach(target => target.remove());
+            
+            updateDisplay();
+        }
+        
+        // 更新显示
+        function updateDisplay() {
+            scoreDisplay.textContent = score;
+            ammoDisplay.textContent = ammo;
+            accuracyDisplay.textContent = calculateAccuracy() + '%';
+        }
+        
+        // 计算命中率
+        function calculateAccuracy() {
+            if (totalShots === 0) return 0;
+            return Math.round((hits / totalShots) * 100);
+        }
+        
+        // 初始化游戏
+        window.onload = initGame;
+    </script>
+</body>
+</html>
